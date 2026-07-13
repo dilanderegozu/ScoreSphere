@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="ScoreSphere.BusinessLayer/ScoreSphere.BusinessLayer.csproj" />
+  <Project Path="ScoreSphere.DataAccessLayer/ScoreSphere.DataAccessLayer.csproj" />
+  <Project Path="ScoreSphere.DtoLayer/ScoreSphere.DtoLayer.csproj" />
+  <Project Path="ScoreSphere.EntityLayer/ScoreSphere.EntityLayer.csproj" />
+  <Project Path="ScoreSphere.WebApi/ScoreSphere.WebApi.csproj" />
+  <Project Path="ScoreSphere.WebUI/ScoreSphere.WebUI.csproj" />
+</Solution>
