@@ -106,18 +106,66 @@ WebUI, Material Design 3 renk token'ları üzerine kurulu, dark-mode odaklı öz
 
 
 
-## 🔜 Sırada — Admin Panel
+## 🔐 Admin Panel (`/Admin/...`)
 
-Public site tamamlandıktan sonra, Team/League/Season/Match/Goal/MatchEvent yönetimi için ayrı bir Admin Paneli (Areas ile izole edilmiş) geliştirilecek.
+Public site'tan tamamen izole, ASP.NET Core **Areas** ile ayrılmış, sabit sidebar navigasyonlu bir yönetim arayüzü. Admin tarafındaki Controller'lar, public site ile isim çakışmasını önlemek için `Admin` öneki taşır (`AdminFixtureController`, `AdminTeamController`, `AdminStandingController` gibi).
 
-## 🛠️ Kullanılan Teknolojiler
+### 📊 Dashboard
+- Toplam lig, takım, maç sayısı ve haftalık maç özeti (gerçek zamanlı hesaplanan)
+- Son maçlar tablosu (Canlı + Tamamlanmış maçlar, durum bazlı renklendirme: Canlı → sarı, Tamamlandı → yeşil)
+- Lig özeti — dinamik lig seçici ile seçilen ligin ilk 5 sırası
+- Hızlı işlemler paneli (Lig/Takım/Maç/Sezon oluşturma kısayolları)
+- <img width="1896" height="855" alt="Ekran görüntüsü 2026-07-15 003243" src="https://github.com/user-attachments/assets/43b32ccc-9e5c-47a4-8eb8-079f1d110ab7" />
+<img width="1898" height="865" alt="Ekran görüntüsü 2026-07-15 003252" src="https://github.com/user-attachments/assets/b39fd486-d569-47a2-914c-a706784f9051" />
+
+
+### 🏆 Lig Yönetimi
+- Lig listesi: her lig için gerçek maç sayısı, benzersiz takım sayısı (`Match` tablosundan `SelectMany`+`Distinct` ile hesaplanan) ve sezon durumu (Planlandı/Devam Ediyor/Tamamlandı, tarih aralığından türetilen)
+- Create / Edit: canlı önizlemeli form, sunucu tarafı validasyon
+- <img width="1899" height="856" alt="Ekran görüntüsü 2026-07-15 003302" src="https://github.com/user-attachments/assets/38412c21-f3c5-4c05-a88f-ba416c78f24f" />
+<img width="1912" height="857" alt="Ekran görüntüsü 2026-07-15 003312" src="https://github.com/user-attachments/assets/98214e93-9c82-4df9-8560-d0c31d6c70d0" />
+<img width="1885" height="859" alt="Ekran görüntüsü 2026-07-15 003357" src="https://github.com/user-attachments/assets/d6c5c588-e3a7-4b7e-9006-5f7cb1205d18" />
+<img width="1913" height="870" alt="Ekran görüntüsü 2026-07-15 003527" src="https://github.com/user-attachments/assets/b8681e67-2648-463f-8381-aa0bf2a1b7dc" />
+
+
+
+### 📅 Sezon Yönetimi
+- Sezon listesi, bağlı lig bilgisiyle birlikte
+- Aktif/Yaklaşan/Tamamlanan sezon özet kartları
+- Create / Edit: lig seçici dropdown, aktiflik anahtarı (toggle)
+<img width="1899" height="865" alt="Ekran görüntüsü 2026-07-15 003534" src="https://github.com/user-attachments/assets/261cd073-0d2d-44b9-b869-f8fba88a9e80" />
+<img width="1900" height="871" alt="Ekran görüntüsü 2026-07-15 003907" src="https://github.com/user-attachments/assets/4621d689-c713-4a72-87e4-db62765f2884" />
+<img width="1903" height="858" alt="Ekran görüntüsü 2026-07-15 003544" src="https://github.com/user-attachments/assets/6e7f24bc-a1de-4c13-8e6d-5206e3ca7819" />
+<img width="1896" height="859" alt="Ekran görüntüsü 2026-07-15 003554" src="https://github.com/user-attachments/assets/b46901c0-e60b-495c-a283-05f66ce48173" />
+
+### 📆 Fikstür Yönetimi
+- Lig + hafta bazlı filtreleme, "Hepsi" seçeneği dahil
+- Maç ekleme/düzenleme: takım, tarih, stadyum, hakem bilgileri; düzenlemede ayrıca durum, dakika ve skor girişi
+<img width="1896" height="853" alt="Ekran görüntüsü 2026-07-15 003606" src="https://github.com/user-attachments/assets/ccffa8a9-00c5-4f73-bbbe-4791fc5fc324" />
+<img width="1915" height="872" alt="Ekran görüntüsü 2026-07-15 003658" src="https://github.com/user-attachments/assets/384c2762-0bd9-4311-9427-a8741d64e468" />
+<img width="1902" height="871" alt="Ekran görüntüsü 2026-07-15 003715" src="https://github.com/user-attachments/assets/d5b0e8d3-9f6a-47e9-a0d8-2bc01764f6ca" />
+<img width="1898" height="866" alt="Ekran görüntüsü 2026-07-15 003722" src="https://github.com/user-attachments/assets/77e343d2-bb31-4694-bb2a-d38d43daefa6" />
+
+
+### 👥 Takım Yönetimi
+- Takım listesi: toplam takım, farklı şehir ve stadyum sayısı özet kartları, her takımın oynadığı maç sayısı
+- Create / Edit: canlı logo/isim önizlemesi
+- <img width="1913" height="858" alt="Ekran görüntüsü 2026-07-15 003731" src="https://github.com/user-attachments/assets/26edde86-9f70-4132-bad5-2c7646d8ed20" />
+<img width="1905" height="868" alt="Ekran görüntüsü 2026-07-15 003742" src="https://github.com/user-attachments/assets/d9f2ccee-2ae1-4a5e-b71f-e48bb73622fd" />
+<img width="1900" height="867" alt="Ekran görüntüsü 2026-07-15 003750" src="https://github.com/user-attachments/assets/981f0b86-1ea7-4027-bfef-c0da04ed6f93" />
+
+
+### 🏅 Puan Durumu (Admin)
+- Lig **ve** sezon ayrı ayrı seçilebilir (lig değişince o ligin sezonları otomatik listelenir)
+- Son 5 maç formu dahil tam istatistik tablosu
+<img width="1892" height="868" alt="Ekran görüntüsü 2026-07-15 003756" src="https://github.com/user-attachments/assets/da4123be-647d-4f43-8941-c87b8e63e192" />
+
+## 🛠️ Kullanılan Teknolojiler (güncellenmiş)
 
 - **Backend:** ASP.NET Core 10 Web API, Entity Framework Core, SQL Server
 - **Frontend:** ASP.NET Core MVC, Tailwind CSS (CDN), Material Symbols
-- **Mimari:** Repository Pattern, Generic Repository, AutoMapper, DTO Pattern
+- **Mimari:** Repository Pattern, Generic Repository, AutoMapper, DTO Pattern, **ASP.NET Core Areas**
 - **API Dokümantasyonu:** Swagger / Swashbuckle
 - **HTTP İstemcisi:** IHttpClientFactory (Named Client)
-
----
 
 *Bu proje, .NET ile çok katmanlı mimari, Repository Pattern ve modern frontend entegrasyonu öğrenme/portfolyo amacıyla geliştirilmiştir.*
