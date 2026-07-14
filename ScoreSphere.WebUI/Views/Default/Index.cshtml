@@ -1,0 +1,125 @@
+﻿@model ScoreSphere.WebUI.Dtos.MatchDtos.ResultMatchDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Hero Section -->
+<section class="relative overflow-hidden py-20 md:py-32 hero-gradient">
+
+    <div class="relative z-10 px-gutter max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full font-label-sm text-label-sm">
+                <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+                CANLI VERİ AKIŞI
+            </div>
+            <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-gray-900">
+                Spor Dünyasının <span class="text-blue-600">Kalbi</span> Burada Atıyor
+            </h1>
+            <p class="font-body-lg text-body-lg text-gray-600 max-w-xl">
+                En güncel skorlar, detaylı istatistikler ve anlık bildirimlerle favori takımlarını bir an bile kaçırma. ScoreSphere ile oyunun bir parçası ol.
+            </p>
+            <div class="flex flex-wrap gap-4 pt-4">
+                <button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-headline-md text-headline-md flex items-center gap-2 transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-primary-container/20">
+                    Canlı Skorları İzle
+                    <span class="material-symbols-outlined" data-original-icon="arrow_forward">arrow_forward</span>
+                </button>
+                <button class="border border-outline-variant hover:bg-surface-container text-gray-900 px-8 py-4 rounded-xl font-headline-md text-headline-md transition-all">
+                    Ligler
+                </button>
+            </div>
+        </div>
+        <!-- Featured Match Card Preview -->
+        @if (Model == null)
+        {
+            <div class="hidden lg:block">
+                <div class="glass-card rounded-[2rem] p-8 shadow-2xl relative text-center text-on-surface-variant">
+                    Şu anda canlı bir maç bulunmuyor.
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="hidden lg:block">
+                <div class="glass-card rounded-[2rem] p-8 shadow-2xl relative">
+                    <div class="flex justify-between items-center mb-8">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">@Model.LeagueName</span>
+                        <span class="text-error font-bold font-label-sm text-label-sm flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+                            CANLI @Model.Minute'
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center gap-4">
+                        <div class="flex flex-col items-center gap-4 flex-1">
+                            <div class="w-24 h-24 rounded-full bg-surface-container-high flex items-center justify-center p-4 border border-outline-variant">
+                                <img class="w-full h-full object-contain" src="@Model.HomeTeamLogoUrl" alt="@Model.HomeTeamName">
+                            </div>
+                            <span class="font-headline-md text-headline-md text-on-surface">@Model.HomeTeamName</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="font-score-xl text-score-xl text-primary">@Model.HomeScore - @Model.AwayScore</span>
+                            <span class="font-label-sm text-label-sm text-on-surface-variant">
+                                @(Model.Status == "Finished" ? "MS Bitti" : Model.Status == "Live" ? "MS Bekleniyor" : Model.Status)
+                            </span>
+                        </div>
+                        <div class="flex flex-col items-center gap-4 flex-1">
+                            <div class="w-24 h-24 rounded-full bg-surface-container-high flex items-center justify-center p-4 border border-outline-variant">
+                                <img class="w-full h-full object-contain" src="@Model.AwayTeamLogoUrl" alt="@Model.AwayTeamName">
+                            </div>
+                            <span class="font-headline-md text-headline-md text-on-surface">@Model.AwayTeamName</span>
+                        </div>
+                    </div>
+
+                           </div>
+            </div>
+        }
+    </div>
+</section>
+<!-- Feature Cards Bento Grid -->
+<section class="px-gutter max-w-container-max mx-auto py-20">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Card 1: Live Tracking -->
+        <div class="group glass-card rounded-3xl p-8 hover:bg-surface-container-high transition-all cursor-pointer relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span class="material-symbols-outlined text-[100px]" data-icon="query_stats">query_stats</span>
+            </div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-primary-container/20 rounded-2xl flex items-center justify-center text-primary mb-6">
+                    <span class="material-symbols-outlined text-[32px]" data-icon="bolt">bolt</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Anlık Takip</h3>
+                <p class="text-on-surface-variant font-body-md text-body-md">
+                    Dünyanın dört bir yanından binlerce ligi saniyelik gecikme olmadan, en hızlı veri altyapısıyla takip edin.
+                </p>
+            </div>
+        </div>
+        <!-- Card 2: Deep Stats -->
+        <div class="group glass-card rounded-3xl p-8 hover:bg-surface-container-high transition-all cursor-pointer relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span class="material-symbols-outlined text-[100px]" data-icon="monitoring">monitoring</span>
+            </div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-tertiary-container/20 rounded-2xl flex items-center justify-center text-tertiary mb-6">
+                    <span class="material-symbols-outlined text-[32px]" data-icon="leaderboard">leaderboard</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Derin Analiz</h3>
+                <p class="text-on-surface-variant font-body-md text-body-md">
+                    Isı haritaları, xG verileri ve detaylı oyuncu karşılaştırmaları ile maçın röntgenini çekin.
+                </p>
+            </div>
+        </div>
+        <!-- Card 3: Custom Notifications -->
+        <div class="group glass-card rounded-3xl p-8 hover:bg-surface-container-high transition-all cursor-pointer relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <span class="material-symbols-outlined text-[100px]" data-icon="notifications_active">notifications_active</span>
+            </div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-secondary-container/20 rounded-2xl flex items-center justify-center text-secondary mb-6">
+                    <span class="material-symbols-outlined text-[32px]" data-icon="notifications_active">notifications_active</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-4">Kişisel Bildirimler</h3>
+                <p class="text-on-surface-variant font-body-md text-body-md">
+                    Gol, kırmızı kart veya maç başlama düdüğü; sadece duymak istediğiniz haberleri cebinize getirin.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

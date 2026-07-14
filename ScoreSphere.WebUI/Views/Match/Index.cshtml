@@ -1,0 +1,207 @@
+﻿@model ScoreSphere.WebUI.ViewModels.MatchIndexViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main class="mt-24 mb-12 px-gutter max-w-container-max mx-auto">
+    <!-- Dashboard Header & Tabs -->
+    <section class="mb-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant pb-4">
+            <div>
+                <h1 class="font-headline-md text-headline-md text-on-surface">Canlı Skorlar</h1>
+                <p class="text-on-surface-variant mt-1">Dünya genelindeki tüm aktif maçları anlık takip edin.</p>
+            </div>
+            <!-- Filter Tabs -->
+            <div class="flex bg-surface-container-high p-1 rounded-xl w-full md:w-auto">
+                <a asp-action="Index" asp-route-filter="all" asp-route-page="1"
+                   class="flex-1 md:flex-none px-6 py-2 rounded-lg text-label-sm text-center @(Model.CurrentFilter == "all" ? "bg-surface-container-lowest text-on-surface shadow-sm font-bold" : "text-on-surface-variant")">
+                    Hepsi
+                </a>
+                <a asp-action="Index" asp-route-filter="Live" asp-route-page="1"
+                   class="flex-1 md:flex-none px-6 py-2 rounded-lg text-label-sm text-center @(Model.CurrentFilter == "Live" ? "bg-surface-container-lowest text-on-surface shadow-sm font-bold" : "text-on-surface-variant")">
+                    Canlı
+                </a>
+                <a asp-action="Index" asp-route-filter="Finished" asp-route-page="1"
+                   class="flex-1 md:flex-none px-6 py-2 rounded-lg text-label-sm text-center @(Model.CurrentFilter == "Finished" ? "bg-surface-container-lowest text-on-surface shadow-sm font-bold" : "text-on-surface-variant")">
+                    Bitenler
+                </a>
+                <a asp-action="Index" asp-route-filter="Upcoming" asp-route-page="1"
+                   class="flex-1 md:flex-none px-6 py-2 rounded-lg text-label-sm text-center @(Model.CurrentFilter == "Upcoming" ? "bg-surface-container-lowest text-on-surface shadow-sm font-bold" : "text-on-surface-variant")">
+                    Yaklaşanlar
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Main Score Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Sidebar: League Selection -->
+        <aside class="lg:col-span-3 space-y-6">
+            <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/10">
+                <h3 class="text-label-sm uppercase tracking-wider text-primary mb-4">Popüler Ligler</h3>
+                <ul class="space-y-1">
+                    @foreach (var league in Model.PopularLeagues.Take(3))
+                    {
+                        <li class="">
+                            <button class="w-full flex items-center justify-between p-2 rounded-lg bg-surface-container-high text-on-surface">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
+                                        <img class="w-6 h-6 object-contain" data-alt="Official logo of the Turkish Trendyol Super Lig, minimalist and sharp graphical representation on a dark professional sports background." src="@league.LogoUrl">
+                                    </div>
+                                    <span class="text-label-sm">@league.LeagueName</span>
+                                </div>
+
+                            </button>
+                        </li>
+                    }
+                 
+                </ul>
+            </div>
+            <div class="bg-surface-container rounded-xl overflow-hidden border border-outline-variant/10">
+                <div class="h-40 bg-cover bg-center flex items-end p-4 relative" data-alt="A dynamic high-action photograph of a football stadium under bright floodlights at night, with a blurred energetic crowd in the background, styled for a premium sports app." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBq9fia2u003cz6ai6ZQ7iZcBoo0tsyFK8bHlZf66vbD4qckirwpHdC3KeTH07av4nim6uMrM9os0Aan6Y6gzVT4-EZez67gvIlFr8uds4iVfi6zeIpgGasci2B_vg8DMQODUctPcfgNKcoMyRvsPKH8-i29G4hf1snOXet4M-rx9_520x3OG0Wan61ApyE3v1Lq879A4FnPTwbvLiZagY1KGICStDLngwzZBemp0BQI518iVkmN1dH&quot;);">
+                    <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+                    <div class="relative z-10">
+                        <span class="bg-tertiary text-on-tertiary font-label-sm px-2 py-0.5 rounded text-[10px] uppercase mb-2 inline-block">Haftanın Maçı</span>
+                        <h4 class="font-headline-md text-on-surface">Galatasaray vs Fenerbahçe</h4>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <p class="text-label-sm text-on-surface-variant mb-4">Dev derbiye kalan süre: 14:23:05</p>
+                    <button class="w-full py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all duration-200">
+                        Maç Detayı
+                    </button>
+                </div>
+            </div>
+        </aside>
+        <div class="lg:col-span-9 space-y-6">
+
+            @foreach (var leagueGroup in Model.LeagueGroups)
+            {
+                <div class="space-y-4 mt-12" data-league-group>
+
+                    <div class="flex items-center gap-3 px-2">
+                        <img class="w-6 h-6 object-contain" src="@leagueGroup.LogoUrl" alt="@leagueGroup.LeagueName">
+                        <h2 class="font-headline-md text-on-surface text-lg">@leagueGroup.LeagueName - @leagueGroup.Country</h2>
+                    </div>
+
+                    @foreach (var match in leagueGroup.Matches)
+                    {
+                      <div class="match-card bg-surface-container rounded-xl border border-outline-variant p-5 transition-transform hover:scale-[1.01] duration-300" data-status="@match.Status">
+                            <div class="flex flex-col md:flex-row items-center gap-6">
+
+                                <!-- Time/Status -->
+                                <div class="flex flex-col items-center justify-center min-w-[80px] border-r border-outline-variant md:pr-6">
+                                    @if (match.Status == "Live")
+                                    {
+                                        <span class="text-tertiary font-bold animate-pulse text-lg">@match.Minute'</span>
+                                        <span class="bg-tertiary text-on-tertiary font-label-sm px-2 py-0.5 rounded-full mt-1 live-glow">CANLI</span>
+                                    }
+                                    else if (match.Status == "Finished")
+                                    {
+                                        <span class="text-on-surface-variant font-bold text-lg">MS</span>
+                                        <span class="text-label-sm text-outline mt-1">Bitti</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-on-surface font-bold text-lg">@match.MatchDate.ToString("HH:mm")</span>
+                                        <span class="text-label-sm text-on-surface-variant mt-1">@match.MatchDate.ToString("dd MMM")</span>
+                                    }
+                                </div>
+
+                                <!-- Teams & Score -->
+                                <div class="flex-1 grid grid-cols-3 items-center w-full">
+                                    <div class="flex flex-col items-center md:flex-row md:justify-end gap-4">
+                                        <span class="font-body-lg font-bold text-on-surface order-2 md:order-1 text-center md:text-right">@match.HomeTeamName</span>
+                                        <img class="w-12 h-12 object-contain order-1 md:order-2" src="@match.HomeTeamLogoUrl" alt="@match.HomeTeamName">
+                                    </div>
+
+                                    <div class="flex flex-col items-center">
+                                        @if (match.Status == "Upcoming")
+                                        {
+                                            <span class="text-on-surface-variant font-medium">vs</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="font-score-xl text-score-xl @(match.Status == "Live" ? "text-primary" : "text-on-surface-variant") tracking-tighter">
+                                                @match.HomeScore - @match.AwayScore
+                                            </span>
+                                            @if (match.HomeHalfScore.HasValue && match.AwayHalfScore.HasValue)
+                                            {
+                                                <span class="text-label-sm text-on-surface-variant mt-1">İY: @match.HomeHalfScore-@match.AwayHalfScore</span>
+                                            }
+                                        }
+                                    </div>
+
+                                    <div class="flex flex-col items-center md:flex-row md:justify-start gap-4">
+                                        <img class="w-12 h-12 object-contain" src="@match.AwayTeamLogoUrl" alt="@match.AwayTeamName">
+                                        <span class="font-body-lg font-bold text-on-surface text-center md:text-left">@match.AwayTeamName</span>
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="flex items-center gap-3 w-full md:w-auto">
+                                    <a asp-controller="Match" asp-action="Detail" asp-route-id="@match.MatchId"
+                                       class="flex-1 md:flex-none border border-outline-variant text-on-surface-variant font-label-sm px-6 py-2.5 rounded-lg hover:bg-surface-container-highest transition-colors text-center">
+                                        Maç Detayı
+                                    </a>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            }
+
+        </div>
+
+     
+    </div>
+    @if (Model.TotalPages > 1)
+    {
+        <div class="flex gap-2 justify-center mt-8">
+            <a asp-action="Index" asp-route-filter="@Model.CurrentFilter" asp-route-page="1"
+               class="px-3 py-2 rounded bg-surface-container-high text-on-surface-variant">&laquo;</a>
+
+            @for (int p = 1; p <= Model.TotalPages; p++)
+            {
+                <a asp-action="Index" asp-route-filter="@Model.CurrentFilter" asp-route-page="@p"
+                   class="px-3 py-2 rounded @(p == Model.CurrentPage ? "bg-error text-white font-bold" : "bg-surface-container-high text-on-surface-variant")">
+                    @p
+                </a>
+            }
+
+            <a asp-action="Index" asp-route-filter="@Model.CurrentFilter" asp-route-page="@Model.TotalPages"
+               class="px-3 py-2 rounded bg-surface-container-high text-on-surface-variant">&raquo;</a>
+        </div>
+    }
+</main>
+<script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'font-bold');
+                b.classList.add('text-on-surface-variant');
+            });
+            btn.classList.add('bg-surface-container-lowest', 'text-on-surface', 'shadow-sm', 'font-bold');
+            btn.classList.remove('text-on-surface-variant');
+
+            const filter = btn.dataset.filter;
+
+            document.querySelectorAll('.match-card').forEach(card => {
+                if (filter === 'all' || card.dataset.status === filter) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.querySelectorAll('[data-league-group]').forEach(group => {
+                const visibleCards = group.querySelectorAll('.match-card:not([style*="display: none"])');
+                group.style.display = visibleCards.length > 0 ? '' : 'none';
+            });
+        });
+    });
+</script>

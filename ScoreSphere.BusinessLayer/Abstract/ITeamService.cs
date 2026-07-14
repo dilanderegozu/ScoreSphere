@@ -1,11 +1,13 @@
-﻿using ScoreSphere.EntityLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ScoreSphere.DtoLayer.TeamDtos;
 
 namespace ScoreSphere.BusinessLayer.Abstract
 {
-    public interface ITeamService :IGenericService<Team>
+    public interface ITeamService
     {
+        Task<List<ResultTeamDto>> TGetListAsync();
+        Task<ResultTeamDto?> TGetByIdAsync(int id);
+        Task TInsertAsync(CreateTeamDto dto);
+        Task TUpdateAsync(UpdateTeamDto dto);
+        Task TDeleteAsync(int id);
     }
 }

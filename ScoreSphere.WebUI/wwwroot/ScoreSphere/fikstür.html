@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Montserrat:wght@700;800;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+    try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "on-tertiary-container": "#c5f600",
+                            "on-secondary": "#233148",
+                            "on-error": "#690005",
+                            "surface-container-lowest": "#0b0f10",
+                            "on-secondary-container": "#abb9d6",
+                            "on-secondary-fixed": "#0d1c32",
+                            "surface-container": "#1d2022",
+                            "on-secondary-fixed-variant": "#39475f",
+                            "surface-bright": "#363a3b",
+                            "on-error-container": "#ffdad6",
+                            "primary-fixed": "#dde1ff",
+                            "primary-fixed-dim": "#b7c4ff",
+                            "surface-container-highest": "#323537",
+                            "surface-container-low": "#191c1e",
+                            "primary": "#b7c4ff",
+                            "on-surface": "#e0e3e5",
+                            "tertiary-container": "#576e00",
+                            "on-primary-fixed-variant": "#0038b6",
+                            "secondary-fixed-dim": "#b9c7e4",
+                            "on-primary-fixed": "#001452",
+                            "on-surface-variant": "#c3c5d9",
+                            "secondary": "#b9c7e4",
+                            "inverse-primary": "#004ced",
+                            "on-tertiary-fixed-variant": "#3c4d00",
+                            "surface": "#101415",
+                            "secondary-container": "#3c4962",
+                            "outline": "#8d90a2",
+                            "error": "#ffb4ab",
+                            "error-container": "#93000a",
+                            "secondary-fixed": "#d6e3ff",
+                            "on-primary-container": "#dfe3ff",
+                            "surface-tint": "#b7c4ff",
+                            "surface-dim": "#101415",
+                            "inverse-surface": "#e0e3e5",
+                            "tertiary-fixed": "#c3f400",
+                            "outline-variant": "#434656",
+                            "on-background": "#e0e3e5",
+                            "tertiary": "#abd600",
+                            "primary-container": "#0052ff",
+                            "on-tertiary-fixed": "#161e00",
+                            "background": "#101415",
+                            "inverse-on-surface": "#2d3133",
+                            "tertiary-fixed-dim": "#abd600",
+                            "on-primary": "#002682",
+                            "surface-container-high": "#272a2c",
+                            "surface-variant": "#323537",
+                            "on-tertiary": "#283500"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                        },
+                        "spacing": {
+                            "gutter": "24px",
+                            "container-max": "1280px",
+                            "base": "8px",
+                            "margin-mobile": "16px",
+                            "margin-desktop": "40px"
+                        },
+                        "fontFamily": {
+                            "label-sm": ["Inter"],
+                            "body-md": ["Inter"],
+                            "score-xl": ["Montserrat"],
+                            "display-lg": ["Montserrat"],
+                            "display-lg-mobile": ["Montserrat"],
+                            "headline-md": ["Montserrat"],
+                            "body-lg": ["Inter"]
+                        },
+                        "fontSize": {
+                            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                            "score-xl": ["36px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "900" }],
+                            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                            "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                        }
+                    },
+                },
+            }
+        } catch (_e) { }</script>
+    <meta charset="utf-8">
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+    <header class="bg-surface-container-low border-b border-outline-variant fixed top-0 left-0 right-0 z-50">
+        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
+            <div class="flex items-center gap-8">
+                <a href="#" class="font-display-lg text-display-lg font-black text-primary">ScoreSphere</a>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Ana Sayfa</a>
+                    <a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Canlı Skorlar</a>
+                    <a href="#" class="text-primary font-bold border-b-2 border-primary pb-1">Fikstür</a>
+                    <a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200">Puan Durumu</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden lg:flex items-center bg-surface-container rounded-full px-4 py-1.5 border border-outline-variant">
+                    <span class="material-symbols-outlined text-outline">search</span>
+                    <input type="text" placeholder="Takım veya Lig ara..." class="bg-transparent border-none focus:ring-0 text-label-sm w-48">
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="p-2 text-on-surface-variant hover:text-primary transition-all active:scale-95">
+                    </button>
+
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow pt-24 pb-12">
+        <div class="max-w-container-max mx-auto px-gutter">
+            <!-- Week Selector Section -->
+            <section class="mb-10">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="font-headline-md text-headline-md text-on-surface flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;" data-original-icon="calendar_month">calendar_month</span>
+                        Süper Lig Fikstür
+                    </h1>
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 bg-surface-container rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors">
+                            <span class="material-symbols-outlined" data-original-icon="chevron_left">chevron_left</span>
+                        </button>
+                        <button class="p-2 bg-surface-container rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors">
+                            <span class="material-symbols-outlined" data-original-icon="chevron_right">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex overflow-x-auto pb-4 gap-3 no-scrollbar">
+                    <!-- Week Buttons -->
+                    <button class="flex-none px-6 py-3 bg-surface-container rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary transition-all">14. Hafta</button>
+                    <button class="flex-none px-6 py-3 bg-surface-container rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary transition-all">15. Hafta</button>
+                    <button class="flex-none px-6 py-3 bg-primary text-on-primary font-bold rounded-xl shadow-[0_0_15px_rgba(183,196,255,0.3)]">16. Hafta</button>
+                    <button class="flex-none px-6 py-3 bg-surface-container rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary transition-all">17. Hafta</button>
+                    <button class="flex-none px-6 py-3 bg-surface-container rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary transition-all">18. Hafta</button>
+                    <button class="flex-none px-6 py-3 bg-surface-container rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary transition-all">19. Hafta</button>
+                    <button class="flex-none px-6 py-3 bg-surface-container rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary transition-all">20. Hafta</button>
+                    <button class="flex-none px-6 py-3 bg-surface-container rounded-xl border border-outline-variant text-on-surface-variant hover:border-primary transition-all">21. Hafta</button>
+                </div>
+            </section>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+                <!-- Main Content: Match List -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Day Group 1 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 px-2">
+                            <div class="h-2 w-2 rounded-full bg-primary"></div>
+                            <h2 class="font-label-sm text-label-sm text-outline uppercase tracking-widest">24 ARALIK PAZAR</h2>
+                        </div>
+                        <!-- Match Card 1 -->
+                        <div class="glass-panel rounded-xl overflow-hidden hover:border-primary/50 transition-colors group">
+                            <div class="flex items-center justify-between p-6">
+                                <div class="flex-1 flex items-center justify-end gap-4">
+                                    <span class="font-body-lg font-bold text-on-surface">Galatasaray</span>
+                                    <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                        <img class="w-full h-full object-contain" data-alt="Official logo of Galatasaray S.K. football club, featuring a vibrant red and yellow crest with an elegant lion emblem, presented on a clean white background with high-quality digital vector details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAmmVQ4Mx19OgbVvVGLfYCD1onM_-l_v0USIMal5Bf3devZG9T4vvPdECqYx3fdNL6z4kVz6rj3N5k0_ZdjE9xEiM8fEwxxy7-JoWZICLTeuIN1PY9goM4v0s9Qqt-79sBU4sFl9uX0AYprk1JZdyUZZJao-yJLndGwYqL8hGCljKOKP0XRI8A_Dmow5o5Lp2YECR-dHPFXJB21nPQGC-fawo1AXZQ8C618k8vvNvkbAp_qqT4oOof">
+                                    </div>
+                                </div>
+                                <div class="px-10 flex flex-col items-center">
+                                    <div class="text-score-xl font-score-xl text-on-surface">19:00</div>
+                                    <div class="text-label-sm text-outline mt-1">Stadyum: RAMS Park</div>
+                                </div>
+                                <div class="flex-1 flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                        <img class="w-full h-full object-contain" data-alt="Official logo of Fenerbahçe S.K. football club, displaying the iconic yellow and navy blue shield with intricate oak leaf details and a modern athletic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOaBBZvEwtLP9P4JiIFaMx5aCyduMBZ6mjmxasvK0pqnDy1nwOeGCb0ia5k2A3L2gfXKN5REPJXOhtzQEtCvfMe7op8z6zEAblrXjHqOnicKIcfk9ceLpwGpLVgQZkR9G0RC5jBL9lRT6gyAgVu54QezhGQXYag_fCFToUDzREhd-HqmxGYncQYGFdCNSNB9A1pjjNXaNO6J-TBGbF4wkO0NLF_FYr1ghmtdGz0iS-mJRAgh9psW5t">
+                                    </div>
+                                    <span class="font-body-lg font-bold text-on-surface">Fenerbahçe</span>
+                                </div>
+                            </div>
+                            <div class="bg-surface-container-low/50 px-6 py-3 flex justify-between items-center text-label-sm border-t border-outline-variant/30">
+                                <span class="flex items-center gap-2 text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-[18px]">stadium</span> beIN Sports 1
+                                </span>
+                                <button class="text-primary font-bold hover:underline">Maç Detayları</button>
+                            </div>
+                        </div>
+                        <!-- Match Card 2 -->
+                        <div class="glass-panel rounded-xl overflow-hidden hover:border-primary/50 transition-colors">
+                            <div class="flex items-center justify-between p-6 opacity-60">
+                                <div class="flex-1 flex items-center justify-end gap-4">
+                                    <span class="font-body-lg font-bold text-on-surface">Beşiktaş</span>
+                                    <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                        <img class="w-full h-full object-contain" data-alt="Official logo of Beşiktaş J.K. football club, showcasing the classic black and white eagle crest with historic Turkish flag details, rendered in a sharp, high-contrast digital format." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN50AEs7YgTJCI5FtP_CRnMnxWuTk_lGaPaOX9r7SPIkAmB0rZfRApAZBpAQXW7FWmFNaZruq-olyIBHwmTgfb5Q4h-YmmpF9xcw0LFLB8xUyq4Z4fVXzzA3wDZ_jvjeK9SbS8T116_eSngpN_Es9-GLjgwnHtKgKaopifY0jTZ2n7Jzpsd2KPdLVCSxc8oCytA3qMUHu59xqcFPqZxDqkGoRWCcfhuFjNsUDZZTI-sAfnsvS5wQIK">
+                                    </div>
+                                </div>
+                                <div class="px-10 flex flex-col items-center">
+                                    <div class="text-score-xl font-score-xl text-primary">3 - 1</div>
+                                    <div class="bg-tertiary-container/30 text-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase mt-1">Tamamlandı</div>
+                                </div>
+                                <div class="flex-1 flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                        <img class="w-full h-full object-contain" data-alt="Official logo of Trabzonspor football club, featuring the burgundy and blue crest with an stylized 'TS' lettermark and a high-performance sports aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLn-s5TI_3-vN10FRwlNAFLjPsRsBGZdgrohzZquo-GMfYHka-i61Kpj0p5VnXVS4eMXsqpWZmMRZ149mzo-uJhEwGUP9OqMQoduFKstBKy4RY46nyWUFXe57vA6aQWKBtSu-3trgM1Hs-Ah6Asrk-t-13w74KlaZow9dfqpJE4QWu1HuMXvtJN3HffbE_WsXuMVxwmfRFya4_YL2fVWZFHjVauUBIheVL4XEvm1BNYtHm7YM8y-nz">
+                                    </div>
+                                    <span class="font-body-lg font-bold text-on-surface">Trabzonspor</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Day Group 2 -->
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 px-2 pt-4">
+                            <div class="h-2 w-2 rounded-full bg-outline"></div>
+                            <h2 class="font-label-sm text-label-sm text-outline uppercase tracking-widest">25 ARALIK PAZARTESİ</h2>
+                        </div>
+                        <!-- -->
+                        <div class="glass-panel rounded-xl overflow-hidden hover:border-primary/50 transition-colors">
+                            <div class="flex items-center justify-between p-6">
+                                <div class="flex-1 flex items-center justify-end gap-4">
+                                    <span class="font-body-lg font-bold text-on-surface">Adana Demir</span>
+                                    <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                        <img class="w-full h-full object-contain" data-alt="Logo of Adana Demirspor, featuring the iconic lightning bolt and blue-white identity, stylized for a modern sports broadcast interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbPU6C9OhgrPEx7UEdwLClQ26lnxpfvql45TAUbDkW-_bP4egCx4QgCzq05pyeh7g9I50dWxVzNgT71a5zbL5fGzDPX36R5gRsdvJfLnIR70aLq9HgFM8xXGDPYeHZP7aqhFZ3Hzsp9XjyKxCVEDdlAjJEV0jihtkyVA13yWXH3z7_gRP7Bm1o4eQL9k1t0ExjTolHQrQ1AdTUhwaJ_8xk3DHj8l_DcFT7mzRG55GQeiLCroehmFQc">
+                                    </div>
+                                </div>
+                                <div class="px-10 flex flex-col items-center">
+                                    <div class="text-score-xl font-score-xl text-on-surface">20:00</div>
+                                </div>
+                                <div class="flex-1 flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                        <img class="w-full h-full object-contain" data-alt="Logo of Antalyaspor, featuring the city's landmarks within a classic circular crest with red and white colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5p_L3HxQpgxfMh7NKoFH90gw5s29y5NyT4pZVHQxWdzm0Q3nEbFjDQTpvEVnKerDVe-os7k3oE2CiTKPLTXxb3-WZ4PdXS8HFhK6_5p7d7eaxYPSrcbKJYwsHA3aYASTL6uOLXMtYcIzOH5FLPvsRrtmVX7r2HwcT-owgBJFHge92gsNP6L8CMdMgBsttLuD-ZNv1KAh6pO4ggvuCTBL-SyynW8Bb9w--BNlxAXcUIUITkmTWPAyZ">
+                                    </div>
+                                    <span class="font-body-lg font-bold text-on-surface">Antalyaspor</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-center gap-4 pt-6">
+                        <button class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-colors disabled:opacity-30" disabled="">
+                            <span class="material-symbols-outlined">arrow_back</span> Önceki
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <button class="w-10 h-10 rounded-lg bg-primary text-on-primary font-bold">1</button>
+                            <button class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant hover:bg-primary/20 transition-colors">2</button>
+                            <button class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant hover:bg-primary/20 transition-colors">3</button>
+                            <span class="text-outline px-2">...</span>
+                            <button class="w-10 h-10 rounded-lg bg-surface-container-high text-on-surface-variant hover:bg-primary/20 transition-colors">12</button>
+                        </div>
+                        <button class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-colors">
+                            Sonraki <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Sidebar: Countdown & Extras -->
+                <div class="space-y-gutter">
+                    <!-- Big Match Countdown -->
+                    <div class="relative rounded-2xl overflow-hidden bg-primary-container p-8 shadow-2xl">
+                        <div class="absolute inset-0 overflow-hidden">
+
+                        </div>
+                        <div class="relative z-10 text-center">
+                            <span class="bg-tertiary text-on-tertiary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 inline-block shadow-lg">DERBİ HEYECANI</span>
+                            <h3 class="font-headline-md text-headline-md text-white mb-6">Galatasaray v Fenerbahçe</h3>
+                            <div class="grid grid-cols-4 gap-2 mb-6">
+                                <div class="bg-black/20 backdrop-blur-md rounded-lg py-3 border border-white/10">
+                                    <div class="text-display-lg-mobile font-score-xl text-white">02</div>
+                                    <div class="text-[10px] text-white/70 uppercase">Gün</div>
+                                </div>
+                                <div class="bg-black/20 backdrop-blur-md rounded-lg py-3 border border-white/10">
+                                    <div class="text-display-lg-mobile font-score-xl text-white">14</div>
+                                    <div class="text-[10px] text-white/70 uppercase">Saat</div>
+                                </div>
+                                <div class="bg-black/20 backdrop-blur-md rounded-lg py-3 border border-white/10">
+                                    <div class="text-display-lg-mobile font-score-xl text-white">32</div>
+                                    <div class="text-[10px] text-white/70 uppercase">Dak</div>
+                                </div>
+                                <div class="bg-black/20 backdrop-blur-md rounded-lg py-3 border border-white/10">
+                                    <div class="text-display-lg-mobile font-score-xl text-white" id="seconds">55</div>
+                                    <div class="text-[10px] text-white/70 uppercase">Sny</div>
+                                </div>
+                            </div>
+                            <button class="w-full bg-white text-primary-container py-4 rounded-xl font-bold hover:bg-opacity-90 transition-all shadow-xl active:scale-95">Hatırlatıcı Oluştur</button>
+                        </div>
+                    </div>
+                    <!-- Lig Filtresi -->
+                    <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant">
+                        <h4 class="font-headline-md text-[20px] text-on-surface mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">filter_list</span>
+                            Ligler
+                        </h4>
+                        <div class="space-y-2">
+                            <button class="w-full flex items-center justify-between p-3 rounded-xl bg-primary/10 border border-primary/30 text-primary">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                                    <span class="font-bold">Süper Lig</span>
+                                </div>
+                                <span class="text-xs bg-primary text-on-primary px-2 py-0.5 rounded-full">10</span>
+                            </button>
+                            <button class="w-full flex items-center justify-between p-3 rounded-xl hover:bg-surface-container-high transition-colors text-on-surface-variant">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined">sports_soccer</span>
+                                    <span class="">Premier League</span>
+                                </div>
+                                <span class="text-xs text-outline">8</span>
+                            </button>
+                            <button class="w-full flex items-center justify-between p-3 rounded-xl hover:bg-surface-container-high transition-colors text-on-surface-variant">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined">sports_soccer</span>
+                                    <span class="">La Liga</span>
+                                </div>
+                                <span class="text-xs text-outline">6</span>
+                            </button>
+                            <button class="w-full flex items-center justify-between p-3 rounded-xl hover:bg-surface-container-high transition-colors text-on-surface-variant">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined">sports_soccer</span>
+                                    <span class="">Serie A</span>
+                                </div>
+                                <span class="text-xs text-outline">9</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Promo Banner -->
+                    <div class="relative rounded-2xl overflow-hidden aspect-[4/5] group cursor-pointer">
+                        <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A cinematic, high-speed action shot of a soccer player kicking a glowing ball on a futuristic stadium pitch at night. Intense blue and electric lime lighting effects pierce through a subtle dark fog. The image has a professional sports broadcast aesthetic with deep contrast and dynamic energy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDheCUUUFVGfqjuFWiz6aoD7B2xtVpuTOaTjWUEvliX-jHT00ZcqcE9fADvoAAxc5pZbb2xmoOsn4-5rBamRTVFCFE_SVV6exmGBsLcjtHYyTdOaforBAnLjkMQ0O958M1i3_OtgxZlcFWE7ZIStuwfG-Gwv5Q_qwpYUu7jDARK1kuRUmxg4eeY2pshCC6tOzKQxwh7K3EHGy-yk9iKVsLiMHtKDKprgiGx--7pa96jJ06RMD87s7gz">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <h5 class="text-white font-bold text-xl mb-2">Canlı Yayınları Kaçırma!</h5>
+                            <p class="text-white/70 text-sm mb-4">Premium paket ile tüm maçları donmadan, yüksek çözünürlükte izle.</p>
+                            <button class="bg-tertiary text-on-tertiary px-6 py-2 rounded-lg font-bold text-sm">Abone Ol</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-surface-container-lowest border-t border-outline-variant mt-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center w-full py-base px-gutter max-w-container-max mx-auto gap-base">
+            <div class="flex items-center gap-6">
+                <span class="font-display-lg text-display-lg font-black text-on-surface">ScoreSphere</span>
+                <p class="font-body-md text-body-md text-on-surface-variant">© 2024 ScoreSphere. Tüm hakları saklıdır.</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors" href="#">Hakkımızda</a>
+                <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors" href="#">İletişim</a>
+                <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors" href="#">Kullanım Koşulları</a>
+                <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors" href="#">Gizlilik Politikası</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+                    <span class="material-symbols-outlined">language</span>
+                </a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+                    <span class="material-symbols-outlined">help_outline</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+    <script class="">
+        // Simple countdown logic for the "Seconds" block
+        let seconds = 55;
+        const secondsEl = document.getElementById('seconds');
+        setInterval(() => {
+            seconds--;
+            if (seconds < 0) seconds = 59;
+            secondsEl.textContent = seconds.toString().padStart(2, '0');
+        }, 1000);
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-xl', 'bg-opacity-95', 'backdrop-blur-md');
+            } else {
+                header.classList.remove('shadow-xl', 'bg-opacity-95', 'backdrop-blur-md');
+            }
+        });
+    </script>
+
+</body>
+</html>

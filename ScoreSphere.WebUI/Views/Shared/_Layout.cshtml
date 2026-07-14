@@ -1,50 +1,203 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="tr" class="dark">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ScoreSphere.WebUI</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ScoreSphere.WebUI.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ScoreSphere.WebUI</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Montserrat:wght@700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        try {
+        tailwind.config = {
+        darkMode: "class",
+        theme: {
+        extend: {
+        colors: {
+        /* PRIMARY */
+        primary: "#2563EB",
+        "primary-container": "#2563EB",
+        "primary-fixed": "#DBEAFE",
+        "primary-fixed-dim": "#93C5FD",
+        "on-primary": "#FFFFFF",
+        "on-primary-container": "#FFFFFF",
+        "on-primary-fixed": "#1E3A8A",
+        "on-primary-fixed-variant": "#2563EB",
+
+        /* SECONDARY */
+        secondary: "#3B82F6",
+        "secondary-container": "#DBEAFE",
+        "secondary-fixed": "#DBEAFE",
+        "secondary-fixed-dim": "#BFDBFE",
+        "on-secondary": "#FFFFFF",
+        "on-secondary-container": "#1E3A8A",
+        "on-secondary-fixed": "#1E3A8A",
+        "on-secondary-fixed-variant": "#2563EB",
+
+        /* TERTIARY */
+        tertiary: "#10B981",
+        "tertiary-container": "#D1FAE5",
+        "tertiary-fixed": "#D1FAE5",
+        "tertiary-fixed-dim": "#6EE7B7",
+        "on-tertiary": "#065F46",
+        "on-tertiary-container": "#065F46",
+        "on-tertiary-fixed": "#065F46",
+        "on-tertiary-fixed-variant": "#047857",
+
+        /* ERROR */
+        error: "#EF4444",
+        "error-container": "#FEE2E2",
+        "on-error": "#FFFFFF",
+        "on-error-container": "#991B1B",
+
+        /* SURFACE */
+        background: "#F3F4F6",
+        surface: "#F8FAFC",
+        "surface-dim": "#F3F4F6",
+        "surface-bright": "#FFFFFF",
+
+        "surface-container-lowest": "#FFFFFF",
+        "surface-container-low": "#F9FAFB",
+        "surface-container": "#F3F4F6",
+        "surface-container-high": "#E5E7EB",
+        "surface-container-highest": "#D1D5DB",
+
+        "surface-variant": "#F3F4F6",
+        "surface-tint": "#2563EB",
+
+        /* TEXT */
+        "on-surface": "#111827",
+        "on-surface-variant": "#4B5563",
+        "on-background": "#111827",
+
+        /* OUTLINE */
+        outline: "#D1D5DB",
+        "outline-variant": "#E5E7EB",
+
+        /* INVERSE */
+        "inverse-primary": "#1D4ED8",
+        "inverse-surface": "#111827",
+        "inverse-on-surface": "#FFFFFF"
+        },
+
+        borderRadius: {
+        DEFAULT: "0.25rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
+        full: "9999px"
+        },
+
+        spacing: {
+        gutter: "24px",
+        "container-max": "1280px",
+        base: "8px",
+        "margin-mobile": "16px",
+        "margin-desktop": "40px"
+        },
+
+        fontFamily: {
+        "label-sm": ["Inter"],
+        "body-md": ["Inter"],
+        "score-xl": ["Montserrat"],
+        "display-lg": ["Montserrat"],
+        "display-lg-mobile": ["Montserrat"],
+        "headline-md": ["Montserrat"],
+        "body-lg": ["Inter"]
+        },
+
+        fontSize: {
+        "label-sm": [
+        "12px",
+        {
+        lineHeight: "16px",
+        letterSpacing: "0.05em",
+        fontWeight: "600"
+        }
+        ],
+        "body-md": [
+        "16px",
+        {
+        lineHeight: "24px",
+        fontWeight: "400"
+        }
+        ],
+        "score-xl": [
+        "36px",
+        {
+        lineHeight: "36px",
+        letterSpacing: "-0.01em",
+        fontWeight: "900"
+        }
+        ],
+        "display-lg": [
+        "48px",
+        {
+        lineHeight: "56px",
+        letterSpacing: "-0.02em",
+        fontWeight: "800"
+        }
+        ],
+        "display-lg-mobile": [
+        "32px",
+        {
+        lineHeight: "40px",
+        letterSpacing: "-0.02em",
+        fontWeight: "800"
+        }
+        ],
+        "headline-md": [
+        "24px",
+        {
+        lineHeight: "32px",
+        fontWeight: "700"
+        }
+        ],
+        "body-lg": [
+        "18px",
+        {
+        lineHeight: "28px",
+        fontWeight: "400"
+        }
+        ]
+        }
+        }
+        }
+        };
+        } catch (_e) {}
+    </script>
+        <meta charset="utf-8">
+    </head>
+    <body class="font-body-md text-body-md overflow-x-hidden">
+        <!-- TopNavBar -->
+        @await Component.InvokeAsync("_LayoutHeaderComponentPartial")
+        <main class="pt-16 min-h-screen">
+          
             @RenderBody()
         </main>
-    </div>
+        <!-- Footer -->
+        @await Component.InvokeAsync("_LayoutFooterComponentPartial")
+        <!-- Bottom Mobile Nav -->
+        @await Component.InvokeAsync("_LayoutNavbarComponentPartial")
+        <script class="">
+            // Smooth scroll interaction for buttons
+            document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('click', (e) => {
+            if (el.getAttribute('href') === '#') {
+            e.preventDefault();
+            }
+            });
+            });
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - ScoreSphere.WebUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+            // Sticky header transparency effect
+            window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+            header.classList.add('shadow-xl', 'bg-surface/95', 'backdrop-blur-md');
+            header.classList.remove('bg-surface-container-low');
+            } else {
+            header.classList.remove('shadow-xl', 'bg-surface/95', 'backdrop-blur-md');
+            header.classList.add('bg-surface-container-low');
+            }
+            });
+        </script>
+    @RenderSection("Scripts", required: false)
+    </body></html>

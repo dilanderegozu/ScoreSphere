@@ -21,7 +21,8 @@ namespace ScoreSphere.DtoLayer.MatchDtos
         public int AwayTeamId { get; set; }
         public string AwayTeamName { get; set; }
         public string AwayTeamLogoUrl { get; set; }
-
+        public string LeagueCountry { get; set; }
+        public string LeagueLogoUrl { get; set; }
         public DateTime MatchDate { get; set; }
         public string Stadium { get; set; }
         public string Referee { get; set; }
