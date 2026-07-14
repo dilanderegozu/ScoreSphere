@@ -115,14 +115,14 @@ Public site'tan tamamen izole, ASP.NET Core **Areas** ile ayrılmış, sabit sid
 - Son maçlar tablosu (Canlı + Tamamlanmış maçlar, durum bazlı renklendirme: Canlı → sarı, Tamamlandı → yeşil)
 - Lig özeti — dinamik lig seçici ile seçilen ligin ilk 5 sırası
 - Hızlı işlemler paneli (Lig/Takım/Maç/Sezon oluşturma kısayolları)
-- <img width="1896" height="855" alt="Ekran görüntüsü 2026-07-15 003243" src="https://github.com/user-attachments/assets/43b32ccc-9e5c-47a4-8eb8-079f1d110ab7" />
+<img width="1896" height="855" alt="Ekran görüntüsü 2026-07-15 003243" src="https://github.com/user-attachments/assets/43b32ccc-9e5c-47a4-8eb8-079f1d110ab7" />
 <img width="1898" height="865" alt="Ekran görüntüsü 2026-07-15 003252" src="https://github.com/user-attachments/assets/b39fd486-d569-47a2-914c-a706784f9051" />
 
 
 ### 🏆 Lig Yönetimi
 - Lig listesi: her lig için gerçek maç sayısı, benzersiz takım sayısı (`Match` tablosundan `SelectMany`+`Distinct` ile hesaplanan) ve sezon durumu (Planlandı/Devam Ediyor/Tamamlandı, tarih aralığından türetilen)
 - Create / Edit: canlı önizlemeli form, sunucu tarafı validasyon
-- <img width="1899" height="856" alt="Ekran görüntüsü 2026-07-15 003302" src="https://github.com/user-attachments/assets/38412c21-f3c5-4c05-a88f-ba416c78f24f" />
+<img width="1899" height="856" alt="Ekran görüntüsü 2026-07-15 003302" src="https://github.com/user-attachments/assets/38412c21-f3c5-4c05-a88f-ba416c78f24f" />
 <img width="1912" height="857" alt="Ekran görüntüsü 2026-07-15 003312" src="https://github.com/user-attachments/assets/98214e93-9c82-4df9-8560-d0c31d6c70d0" />
 <img width="1885" height="859" alt="Ekran görüntüsü 2026-07-15 003357" src="https://github.com/user-attachments/assets/d6c5c588-e3a7-4b7e-9006-5f7cb1205d18" />
 <img width="1913" height="870" alt="Ekran görüntüsü 2026-07-15 003527" src="https://github.com/user-attachments/assets/b8681e67-2648-463f-8381-aa0bf2a1b7dc" />
@@ -150,7 +150,7 @@ Public site'tan tamamen izole, ASP.NET Core **Areas** ile ayrılmış, sabit sid
 ### 👥 Takım Yönetimi
 - Takım listesi: toplam takım, farklı şehir ve stadyum sayısı özet kartları, her takımın oynadığı maç sayısı
 - Create / Edit: canlı logo/isim önizlemesi
-- <img width="1913" height="858" alt="Ekran görüntüsü 2026-07-15 003731" src="https://github.com/user-attachments/assets/26edde86-9f70-4132-bad5-2c7646d8ed20" />
+<img width="1913" height="858" alt="Ekran görüntüsü 2026-07-15 003731" src="https://github.com/user-attachments/assets/26edde86-9f70-4132-bad5-2c7646d8ed20" />
 <img width="1905" height="868" alt="Ekran görüntüsü 2026-07-15 003742" src="https://github.com/user-attachments/assets/d9f2ccee-2ae1-4a5e-b71f-e48bb73622fd" />
 <img width="1900" height="867" alt="Ekran görüntüsü 2026-07-15 003750" src="https://github.com/user-attachments/assets/981f0b86-1ea7-4027-bfef-c0da04ed6f93" />
 
