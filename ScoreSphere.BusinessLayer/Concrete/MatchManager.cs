@@ -67,5 +67,7 @@ namespace ScoreSphere.BusinessLayer.Concrete
             var match = await _matchDal.GetMatchWithDetailsByIdAsync(id);
             return match == null ? null : _mapper.Map<MatchDetailDto>(match);
         }
+
+
     }
 }

@@ -83,7 +83,7 @@ namespace ScoreSphere.BusinessLayer.Mapping
      
             CreateMap<MatchStat, ResultMatchStatDto>().ReverseMap();
             CreateMap<UpdateMatchStatDto, MatchStat>().ReverseMap();
-
+            CreateMap<CreateMatchStatDto, MatchStat>();
             CreateMap<Match, MatchDetailDto>()
     .ForMember(dest => dest.HomeTeamName, opt => opt.MapFrom(src => src.HomeTeam!.TeamName))
     .ForMember(dest => dest.HomeTeamLogoUrl, opt => opt.MapFrom(src => src.HomeTeam!.LogoUrl))

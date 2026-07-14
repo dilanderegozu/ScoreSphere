@@ -83,5 +83,15 @@ namespace ScoreSphere.WebApi.Controllers
             await _matchService.TDeleteAsync(id);
             return Ok(new { message = "Maç silindi." });
         }
+
+        [HttpGet("{id}/detail")]
+        public async Task<IActionResult> GetDetail(int id)
+        {
+            var detail = await _matchService.GetMatchDetailAsync(id);
+            if (detail == null)
+                return NotFound(new { message = "Maç bulunamadı." });
+
+            return Ok(detail);
+        }
     }
 }

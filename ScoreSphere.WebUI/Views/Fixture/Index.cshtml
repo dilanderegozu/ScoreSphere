@@ -1,0 +1,190 @@
+﻿@model ScoreSphere.WebUI.Models.FixtureViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main class="flex-grow pt-24 pb-12">
+    <div class="max-w-container-max mx-auto px-gutter">
+
+        <!-- Lig ve Hafta Seçici -->
+        <section class="mb-10">
+            <h1 class="font-headline-md text-headline-md text-on-surface flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">calendar_month</span>
+                @Model.LeagueName Fikstür
+            </h1>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-on-surface-variant mb-2">Lig</label>
+                    <select id="leagueSelect"
+                            class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary">
+                        @foreach (var league in Model.Leagues)
+                        {
+                            <option value="@league.SeasonId" selected="@(league.LeagueId == Model.CurrentLeagueId)">
+                                @league.LeagueName
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-on-surface-variant mb-2">Hafta</label>
+                    <select id="weekSelect"
+                            class="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary">
+                        <option value="all" selected="@(Model.CurrentWeek == "all")">Hepsi</option>
+                        @foreach (var week in Model.AvailableWeeks)
+                        {
+                            <option value="@week" selected="@(Model.CurrentWeek == week.ToString())">
+                                @week. Hafta
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+
+            <!-- Ana içerik: Maç Listesi -->
+            <div class="lg:col-span-2 space-y-6">
+
+                @if (!Model.DayGroups.Any())
+                {
+                    <div class="glass-panel rounded-xl p-8 text-center text-on-surface-variant">
+                        Bu haftaya ait maç bulunamadı.
+                    </div>
+                }
+
+                @foreach (var day in Model.DayGroups)
+                {
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 px-2">
+                            <div class="h-2 w-2 rounded-full bg-primary"></div>
+                            <h2 class="font-label-sm text-label-sm text-outline uppercase tracking-widest">
+                                @day.Date.ToString("dd MMMM dddd").ToUpper()
+                            </h2>
+                        </div>
+
+                        @foreach (var match in day.Matches)
+                        {
+                            <div class="glass-panel rounded-xl overflow-hidden hover:border-primary/50 transition-colors group">
+                                <div class="flex items-center justify-between p-6 @(match.Status == "Finished" ? "opacity-60" : "")">
+
+                                    <div class="flex-1 flex items-center justify-end gap-4">
+                                        <span class="font-body-lg font-bold text-on-surface">@match.HomeTeamName</span>
+                                        <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                            <img class="w-full h-full object-contain" src="@match.HomeTeamLogoUrl" alt="@match.HomeTeamName">
+                                        </div>
+                                    </div>
+
+                                    <div class="px-10 flex flex-col items-center">
+                                        @if (match.Status == "Live")
+                                        {
+                                            <div class="text-score-xl font-score-xl text-primary">@match.HomeScore - @match.AwayScore</div>
+                                            <div class="bg-error/20 text-error px-2 py-0.5 rounded text-[10px] font-bold uppercase mt-1 flex items-center gap-1">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+                                                CANLI @match.Minute'
+                                            </div>
+                                        }
+                                        else if (match.Status == "Finished")
+                                        {
+                                            <div class="text-score-xl font-score-xl text-primary">@match.HomeScore - @match.AwayScore</div>
+                                            <div class="bg-tertiary-container/30 text-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase mt-1">Tamamlandı</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="text-score-xl font-score-xl text-on-surface">@match.MatchDate.ToString("HH:mm")</div>
+                                            <div class="text-label-sm text-outline mt-1">Stadyum: @match.Stadium</div>
+                                        }
+                                    </div>
+
+                                    <div class="flex-1 flex items-center gap-4">
+                                        <div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center p-2 border border-outline-variant">
+                                            <img class="w-full h-full object-contain" src="@match.AwayTeamLogoUrl" alt="@match.AwayTeamName">
+                                        </div>
+                                        <span class="font-body-lg font-bold text-on-surface">@match.AwayTeamName</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="bg-surface-container-low/50 px-6 py-3 flex justify-between items-center text-label-sm border-t border-outline-variant/30">
+                                    <span class="flex items-center gap-2 text-on-surface-variant">
+                                        <span class="material-symbols-outlined text-[18px]">stadium</span> @match.Stadium
+                                    </span>
+                                    <a asp-controller="MatchDetail" asp-action="Index" asp-route-id="@match.MatchId" class="text-primary font-bold hover:underline">
+                                        Maç Detayları
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-gutter">
+
+                @if (Model.BigMatch != null)
+                {
+                    <div class="relative rounded-2xl overflow-hidden bg-primary-container p-8 shadow-2xl">
+                        <div class="relative z-10 text-center">
+                            <span class="bg-tertiary text-on-tertiary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 inline-block shadow-lg">DERBİ HEYECANI</span>
+                            <h3 class="font-headline-md text-headline-md text-white mb-2">@Model.BigMatch.HomeTeamName v @Model.BigMatch.AwayTeamName</h3>
+                            <p class="text-white/80 text-sm mb-6">@Model.BigMatch.MatchDate.ToString("dd MMMM, HH:mm")</p>
+                            <a asp-controller="MatchDetail" asp-action="Index" asp-route-id="@Model.BigMatch.MatchId"
+                               class="block w-full bg-white text-primary-container py-4 rounded-xl font-bold hover:bg-opacity-90 transition-all shadow-xl active:scale-95">
+                                Maç Detayı
+                            </a>
+                        </div>
+                    </div>
+                }
+
+                <div class="bg-surface-container rounded-2xl p-6 border border-outline-variant">
+                    <h4 class="font-headline-md text-[20px] text-on-surface mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">filter_list</span>
+                        Ligler
+                    </h4>
+                    <div class="space-y-2">
+                        @foreach (var league in Model.Leagues)
+                        {
+                            <a asp-action="Index" asp-route-seasonId="@league.SeasonId" asp-route-week="1"
+                               class="w-full flex items-center justify-between p-3 rounded-xl transition-colors @(league.LeagueId == Model.CurrentLeagueId
+                                                                  ? "bg-primary/10 border border-primary/30 text-primary"
+                                                                  : "hover:bg-surface-container-high text-on-surface-variant")">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined" style="@(league.LeagueId == Model.CurrentLeagueId ? "font-variation-settings: 'FILL' 1;" : "")">
+                                        @(league.LeagueId == Model.CurrentLeagueId ? "star" : "sports_soccer")
+                                    </span>
+                                    <span class="@(league.LeagueId == Model.CurrentLeagueId ? "font-bold" : "")">@league.LeagueName</span>
+                                </div>
+                                <span class="text-xs @(league.LeagueId == Model.CurrentLeagueId ? "bg-primary text-on-primary px-2 py-0.5 rounded-full" : "text-outline")">
+                                    @league.MatchCount
+                                </span>
+                            </a>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+        const leagueSelect = document.getElementById("leagueSelect");
+    const weekSelect = document.getElementById("weekSelect");
+
+
+    leagueSelect.addEventListener("change", () => {
+        const seasonId = leagueSelect.value;
+        window.location.href = `/Fixture/Index?seasonId=${seasonId}`;
+    });
+
+   
+    weekSelect.addEventListener("change", () => {
+        const seasonId = leagueSelect.value;
+        const week = weekSelect.value;
+        window.location.href = `/Fixture/Index?seasonId=${seasonId}&week=${week}`;
+    });
+  
+</script>

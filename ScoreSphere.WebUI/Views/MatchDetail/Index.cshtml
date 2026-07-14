@@ -1,0 +1,338 @@
+﻿@model ScoreSphere.WebUI.Dtos.MatchDtos.MatchDetailDto
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main class="max-w-container-max mx-auto px-gutter py-8 space-y-8">
+
+    <!-- Match Header Hero -->
+    <section class="match-card rounded-xl p-8 md:p-12 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+
+            <!-- Home Team -->
+            <div class="flex flex-col items-center md:items-end flex-1 text-center md:text-right">
+                <div class="w-24 h-24 md:w-32 md:h-32 bg-surface-container-high rounded-full flex items-center justify-center p-4 mb-4 ring-1 ring-outline-variant shadow-2xl">
+                    <img class="w-20 h-20 md:w-28 md:h-28 object-contain" src="@Model.HomeTeamLogoUrl" alt="@Model.HomeTeamName">
+                </div>
+                <h2 class="font-headline-md text-headline-md text-on-surface">@Model.HomeTeamName</h2>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Ev Sahibi</span>
+            </div>
+
+            <!-- Score & Status -->
+            <div class="flex flex-col items-center gap-4">
+                @if (Model.Status == "Live")
+                {
+                    <div class="bg-tertiary text-on-tertiary px-4 py-1 rounded-full flex items-center gap-2">
+                        <span class="w-2 h-2 bg-on-tertiary rounded-full animate-pulse"></span>
+                        <span class="font-label-sm text-label-sm font-bold">CANLI @Model.Minute'</span>
+                    </div>
+                }
+                else if (Model.Status == "Finished")
+                {
+                    <div class="bg-surface-container-high text-on-surface-variant px-4 py-1 rounded-full">
+                        <span class="font-label-sm text-label-sm font-bold">MAÇ SONU</span>
+                    </div>
+                }
+                else if (Model.Status == "HalfTime")
+                {
+                    <div class="bg-surface-container-high text-on-surface-variant px-4 py-1 rounded-full">
+                        <span class="font-label-sm text-label-sm font-bold">DEVRE ARASI</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="bg-surface-container-high text-on-surface-variant px-4 py-1 rounded-full">
+                        <span class="font-label-sm text-label-sm font-bold">@Model.MatchDate.ToString("dd MMM, HH:mm")</span>
+                    </div>
+                }
+
+                <div class="flex items-center gap-6">
+                    <span class="font-score-xl text-score-xl text-black">@(Model.HomeScore?.ToString() ?? "-")</span>
+                    <span class="font-score-xl text-score-xl text-outline-variant">-</span>
+                    <span class="font-score-xl text-score-xl text-black">@(Model.AwayScore?.ToString() ?? "-")</span>
+                </div>
+
+                @if (Model.HomeHalfScore.HasValue && Model.AwayHalfScore.HasValue)
+                {
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">İY: @Model.HomeHalfScore-@Model.AwayHalfScore</span>
+                }
+
+                <div class="text-on-surface-variant font-label-sm text-label-sm text-center">
+                    @Model.LeagueName - Hafta @Model.Week<br>@Model.Stadium
+                </div>
+            </div>
+
+            <!-- Away Team -->
+            <div class="flex flex-col items-center md:items-start flex-1 text-center md:text-left">
+                <div class="w-24 h-24 md:w-32 md:h-32 bg-surface-container-high rounded-full flex items-center justify-center p-4 mb-4 ring-1 ring-outline-variant shadow-2xl">
+                    <img class="w-20 h-20 md:w-28 md:h-28 object-contain" src="@Model.AwayTeamLogoUrl" alt="@Model.AwayTeamName">
+                </div>
+                <h2 class="font-headline-md text-headline-md text-on-surface">@Model.AwayTeamName</h2>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Deplasman</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- Sol Kolon -->
+        <div class="lg:col-span-8 space-y-8">
+
+            <!-- Goller -->
+            <section class="match-card rounded-xl p-6">
+                <h3 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-tertiary">sports_soccer</span>
+                    Goller
+                </h3>
+
+                @if (!Model.Goals.Any())
+                {
+                    <p class="text-on-surface-variant">Henüz gol yok.</p>
+                }
+                else
+                {
+                    <div class="space-y-4">
+                        @foreach (var goal in Model.Goals.OrderBy(g => g.Minute))
+                        {
+                            bool isHome = goal.TeamId == Model.HomeTeamId;
+                            <div class="flex @(isHome ? "" : "flex-row-reverse") items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant/30">
+                                <div class="flex @(isHome ? "" : "flex-row-reverse") items-center gap-4">
+                                    <span class="font-score-xl text-[24px] @(isHome ? "text-tertiary" : "text-error")">@goal.Minute'</span>
+                                    <div class="@(isHome ? "" : "text-right")">
+                                        <p class="font-body-lg text-on-surface font-bold">@goal.PlayerName</p>
+                                        @if (goal.IsPenalty)
+                                        {
+                                            <p class="font-label-sm text-on-surface-variant">Penaltı</p>
+                                        }
+                                        @if (goal.IsOwnGoal)
+                                        {
+                                            <p class="font-label-sm text-error">Kendi Kalesine</p>
+                                        }
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined @(isHome ? "text-tertiary" : "text-error")" style="font-variation-settings: &quot;FILL&quot; 1;">sports_soccer</span>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+
+            <!-- İstatistikler -->
+            @if (Model.Stats != null)
+            {
+                <section class="match-card rounded-xl p-6">
+                    <h3 class="font-headline-md text-headline-md mb-8 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">bar_chart</span>
+                        Maç İstatistikleri
+                    </h3>
+                    <div class="space-y-8">
+
+                        <!-- Topa Sahip Olma -->
+                        <div>
+                            <div class="flex justify-between mb-2 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+                                <span class="text-primary font-bold">%@Model.Stats.HomePossession Topa Sahip Olma</span>
+                                <span class="text-secondary font-bold">%@Model.Stats.AwayPossession</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+                                <div class="h-full bg-primary transition-all duration-700" style="width: @(Model.Stats.HomePossession)%"></div>
+                                <div class="h-full bg-secondary transition-all duration-700" style="width: @(Model.Stats.AwayPossession)%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Sayısal İstatistikler -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="p-4 bg-surface-container-low rounded-lg text-center border border-outline-variant/20">
+                                <p class="text-on-surface-variant font-label-sm text-label-sm mb-2 uppercase">Şutlar</p>
+                                <div class="flex justify-center items-center gap-2">
+                                    <span class="font-score-xl text-[24px] text-primary">@Model.Stats.HomeShots</span>
+                                    <span class="text-on-surface text-sm">-</span>
+                                    <span class="font-score-xl text-[24px] text-secondary">@Model.Stats.AwayShots</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-container-low rounded-lg text-center border border-outline-variant/20">
+                                <p class="text-on-surface-variant font-label-sm text-label-sm mb-2 uppercase">Pas İsabeti</p>
+                                <div class="flex justify-center items-center gap-2">
+                                    <span class="font-score-xl text-[24px] text-primary">%@Model.Stats.HomePassAccuracy</span>
+                                    <span class="text-on-surface text-sm">-</span>
+                                    <span class="font-score-xl text-[24px] text-secondary">%@Model.Stats.AwayPassAccuracy</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-container-low rounded-lg text-center border border-outline-variant/20">
+                                <p class="text-on-surface-variant font-label-sm text-label-sm mb-2 uppercase">Köşe Vuruşu</p>
+                                <div class="flex justify-center items-center gap-2">
+                                    <span class="font-score-xl text-[24px] text-primary">@Model.Stats.HomeCorners</span>
+                                    <span class="text-on-surface text-sm">-</span>
+                                    <span class="font-score-xl text-[24px] text-secondary">@Model.Stats.AwayCorners</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-surface-container-low rounded-lg text-center border border-outline-variant/20">
+                                <p class="text-on-surface-variant font-label-sm text-label-sm mb-2 uppercase">Fauller</p>
+                                <div class="flex justify-center items-center gap-2">
+                                    <span class="font-score-xl text-[24px] text-primary">@Model.Stats.HomeFouls</span>
+                                    <span class="text-on-surface text-sm">-</span>
+                                    <span class="font-score-xl text-[24px] text-secondary">@Model.Stats.AwayFouls</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- İsabetli Şut Bar -->
+                        <div>
+                            <div class="flex justify-between mb-2 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+                                <span class="text-tertiary font-bold">İsabetli Şut: @Model.Stats.HomeShotsOnTarget</span>
+                                <span class="text-error font-bold">@Model.Stats.AwayShotsOnTarget</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+                                @{
+                                    var totalOnTarget = Model.Stats.HomeShotsOnTarget + Model.Stats.AwayShotsOnTarget;
+                                    var homePct = totalOnTarget > 0 ? (Model.Stats.HomeShotsOnTarget * 100 / totalOnTarget) : 50;
+                                    var awayPct = 100 - homePct;
+                                }
+                                <div class="h-full bg-tertiary transition-all duration-700" style="width: @(homePct)%"></div>
+                                <div class="h-full bg-error transition-all duration-700" style="width: @(awayPct)%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Korner + Ofsayt Bar -->
+                        <div>
+                            <div class="flex justify-between mb-2 font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+                                <span>Ofsayt: @Model.Stats.HomeOffsides</span>
+                                <span>@Model.Stats.AwayOffsides</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+                                @{
+                                    var totalOffsides = Model.Stats.HomeOffsides + Model.Stats.AwayOffsides;
+                                    var homeOffPct = totalOffsides > 0 ? (Model.Stats.HomeOffsides * 100 / totalOffsides) : 50;
+                                    var awayOffPct = 100 - homeOffPct;
+                                }
+                                <div class="h-full bg-primary/60 transition-all duration-700" style="width: @(homeOffPct)%"></div>
+                                <div class="h-full bg-secondary/60 transition-all duration-700" style="width: @(awayOffPct)%"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            }
+        </div>
+        <!-- Sağ Kolon -->
+        <aside class="lg:col-span-4 space-y-8">
+
+            <!-- Maç Akışı -->
+            <section class="match-card rounded-xl p-6">
+                <h3 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary">timeline</span>
+                    Maç Akışı
+                </h3>
+
+                @if (!Model.Events.Any())
+                {
+                    <p class="text-on-surface-variant">Henüz bir olay kaydedilmedi.</p>
+                }
+                else
+                {
+                    <div class="relative pl-6 space-y-8">
+                        <div class="absolute left-[7px] top-2 bottom-2 w-[2px] bg-outline-variant opacity-30"></div>
+
+                        @foreach (var ev in Model.Events.OrderByDescending(e => e.Minute))
+                        {
+                            string dotColor = ev.EventType switch
+                            {
+                                "Goal" => "bg-tertiary",
+                                "YellowCard" => "bg-[#FFD700]",
+                                "RedCard" => "bg-error",
+                                "Substitution" => "bg-secondary",
+                                _ => "bg-outline"
+                            };
+
+                            string label = ev.EventType switch
+                            {
+                                "Goal" => "GOL!",
+                                "YellowCard" => "SARI KART",
+                                "RedCard" => "KIRMIZI KART",
+                                "Substitution" => "OYUNCU DEĞİŞİKLİĞİ",
+                                "Penalty" => "PENALTI",
+                                "VAR" => "VAR İNCELEMESİ",
+                                _ => ev.EventType
+                            };
+
+                            <div class="relative">
+                                <div class="absolute -left-[23px] top-1 w-4 h-4 rounded-full @dotColor ring-4 ring-surface-container"></div>
+                                <div class="space-y-1">
+                                    <span class="font-label-sm text-label-sm text-on-surface-variant">@ev.Minute' - @label</span>
+                                    <p class="font-body-md text-on-surface">
+                                        @ev.PlayerName@(!string.IsNullOrEmpty(ev.Description) ? " - " + ev.Description : "")
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+
+            <!-- Maç Bilgileri -->
+            <section class="match-card rounded-xl p-6 bg-surface-container-high border-primary/20">
+                <h3 class="font-headline-md text-headline-md mb-6">Maç Bilgileri</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-on-surface-variant text-[20px]">calendar_today</span>
+                            <span class="font-label-sm text-on-surface-variant">Tarih</span>
+                        </div>
+                        <span class="font-body-md text-on-surface">@Model.MatchDate.ToString("dd MMMM yyyy")</span>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-on-surface-variant text-[20px]">stadium</span>
+                            <span class="font-label-sm text-on-surface-variant">Hakem</span>
+                        </div>
+                        <span class="font-body-md text-on-surface">@Model.Referee</span>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-on-surface-variant text-[20px]">location_on</span>
+                            <span class="font-label-sm text-on-surface-variant">Stadyum</span>
+                        </div>
+                        <span class="font-body-md text-on-surface">@Model.Stadium</span>
+                    </div>
+                </div>
+
+                @if (Model.Stats != null)
+                {
+                    <div class="mt-8 grid grid-cols-2 gap-4">
+                        <div class="flex flex-col items-center p-3 bg-surface-container-low rounded-lg">
+                            <div class="w-6 h-8 bg-[#FFD700] rounded-[2px] mb-2 shadow-sm shadow-[#FFD700]/50"></div>
+                            <span class="font-score-xl text-[24px]">@(Model.Stats.HomeYellowCards + Model.Stats.AwayYellowCards)</span>
+                            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Sarı Kart</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 bg-surface-container-low rounded-lg">
+                            <div class="w-6 h-8 bg-[#FF0000] rounded-[2px] mb-2 shadow-sm shadow-[#FF0000]/50"></div>
+                            <span class="font-score-xl text-[24px]">@(Model.Stats.HomeRedCards + Model.Stats.AwayRedCards)</span>
+                            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Kırmızı Kart</span>
+                        </div>
+                    </div>
+                }
+            </section>
+
+        </aside>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bars = entry.target.querySelectorAll('.stats-fill');
+                    bars.forEach(bar => {
+                        const width = bar.style.width;
+                        bar.style.width = '0%';
+                        setTimeout(() => { bar.style.width = width; }, 100);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stats-bar').forEach(bar => {
+            observer.observe(bar.parentElement.parentElement);
+        });
+    });
+</script>

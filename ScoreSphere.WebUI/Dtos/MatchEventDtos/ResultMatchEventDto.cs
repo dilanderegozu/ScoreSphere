@@ -10,4 +10,5 @@ namespace ScoreSphere.WebUI.Dtos.MatchEventDtos
         public int Minute { get; set; }
         public string Description { get; set; }
     }
+ 
 }

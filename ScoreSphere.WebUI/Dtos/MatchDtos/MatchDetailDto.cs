@@ -27,7 +27,6 @@ namespace ScoreSphere.WebUI.Dtos.MatchDtos
         public int? AwayScore { get; set; }
         public int? HomeHalfScore { get; set; }
         public int? AwayHalfScore { get; set; }
-
         public ResultMatchStatDto Stats { get; set; }
         public List<ResultGoalDto> Goals { get; set; } = new();
         public List<ResultMatchEventDto> Events { get; set; } = new();

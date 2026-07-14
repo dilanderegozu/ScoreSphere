@@ -1,25 +1,53 @@
-﻿<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-low border-b border-outline-variant">
+﻿@{
+    string ActiveClass(string controllerName)
+    {
+        var isActive = string.Equals(
+            ViewContext.RouteData.Values["controller"]?.ToString(),
+            controllerName,
+            StringComparison.OrdinalIgnoreCase);
+
+        return isActive
+            ? "text-primary font-bold border-b-2 border-primary pb-1"
+            : "text-on-surface-variant font-medium hover:text-primary transition-colors duration-200";
+    }
+}
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-low border-b border-outline-variant">
     <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
         <div class="flex items-center gap-8">
-            <a href="#" class="font-display-lg text-[28px] leading-tight font-black text-primary">ScoreSphere</a>
+            <a asp-controller="Default" asp-action="Index"
+               class="font-display-lg text-[28px] leading-tight font-black text-primary">
+                ScoreSphere
+            </a>
+
             <nav class="hidden md:flex gap-6 items-center">
-                <a href="#" class="text-primary font-bold border-b-2 border-primary pb-1 font-label-sm text-label-sm">Ana Sayfa</a>
-                <a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-sm text-label-sm">Canlı Skorlar</a>
-                <a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-sm text-label-sm">Fikstür</a>
-                <a href="#" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-label-sm text-label-sm">Puan Durumu</a>
+                <a asp-controller="Default" asp-action="Index"
+                   class="@ActiveClass("Default") font-label-sm text-label-sm">
+                    Ana Sayfa
+                </a>
+
+                <a asp-controller="Match" asp-action="Index"
+                   class="@ActiveClass("Match") font-label-sm text-label-sm">
+                    Canlı Skorlar
+                </a>
+
+                <a asp-controller="Fixture" asp-action="Index"
+                   class="@ActiveClass("Index") font-label-sm text-label-sm">
+                    Fikstür
+                </a>
+
+                <a asp-controller="Standing" asp-action="Index"
+                   class="@ActiveClass("Standing") font-label-sm text-label-sm">
+                    Puan Durumu
+                </a>
             </nav>
         </div>
+
         <div class="flex items-center gap-4">
             <div class="hidden lg:flex items-center bg-surface-container-highest px-3 py-1.5 rounded-full border border-outline-variant">
                 <span class="material-symbols-outlined text-[20px] text-on-surface-variant">search</span>
-                <input type="text" placeholder="Takım, lig veya oyuncu ara..." class="bg-transparent border-none focus:ring-0 text-sm text-on-surface placeholder:text-on-surface-variant w-48">
-            </div>
-            <div class="flex items-center gap-2">
-                <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-                </button>
-                <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-                </button>
-
+                <input type="text" placeholder="Takım, lig veya oyuncu ara..."
+                       class="bg-transparent border-none focus:ring-0 text-sm text-on-surface placeholder:text-on-surface-variant w-48">
             </div>
         </div>
     </div>

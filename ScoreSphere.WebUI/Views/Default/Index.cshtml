@@ -18,13 +18,15 @@
                 En güncel skorlar, detaylı istatistikler ve anlık bildirimlerle favori takımlarını bir an bile kaçırma. ScoreSphere ile oyunun bir parçası ol.
             </p>
             <div class="flex flex-wrap gap-4 pt-4">
-                <button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-headline-md text-headline-md flex items-center gap-2 transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-primary-container/20">
+                <a asp-controller="Match" asp-action="Index"
+                   class="bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-headline-md text-headline-md flex items-center gap-2 transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-primary-container/20">
                     Canlı Skorları İzle
                     <span class="material-symbols-outlined" data-original-icon="arrow_forward">arrow_forward</span>
-                </button>
-                <button class="border border-outline-variant hover:bg-surface-container text-gray-900 px-8 py-4 rounded-xl font-headline-md text-headline-md transition-all">
-                    Ligler
-                </button>
+                </a>
+                <a asp-controller="Standing" asp-action="Index"
+                   class="border border-outline-variant hover:bg-surface-container text-on-surface px-8 py-4 rounded-xl font-headline-md text-headline-md transition-all">
+                 Puan Durumu
+                </a>
             </div>
         </div>
         <!-- Featured Match Card Preview -->

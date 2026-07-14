@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScoreSphere.DtoLayer.MatchStatDtos
+﻿namespace ScoreSphere.DtoLayer.MatchStatDtos
 {
     public class CreateMatchStatDto
     {
         public int MatchId { get; set; }
-
         public int HomePossession { get; set; }
         public int AwayPossession { get; set; }
         public int HomeShots { get; set; }

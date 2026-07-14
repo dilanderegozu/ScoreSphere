@@ -2,6 +2,7 @@
 using ScoreSphere.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 
 namespace ScoreSphere.DataAccessLayer.Concrete
@@ -29,8 +30,9 @@ namespace ScoreSphere.DataAccessLayer.Concrete
                 .WithMany(t => t.HomeMatches)
                 .HasForeignKey(m => m.HomeTeamId)
                 .OnDelete(DeleteBehavior.Restrict);
+    
 
-            modelBuilder.Entity<Match>()
+                modelBuilder.Entity<Match>()
                 .HasOne(m => m.AwayTeam)
                 .WithMany(t => t.AwayMatches)
                 .HasForeignKey(m => m.AwayTeamId)
@@ -80,24 +82,22 @@ namespace ScoreSphere.DataAccessLayer.Concrete
                 .OnDelete(DeleteBehavior.Cascade);
 
       
-            modelBuilder.Entity<Team>().Property(t => t.TeamName).HasMaxLength(100).IsRequired();
-            modelBuilder.Entity<Team>().Property(t => t.City).HasMaxLength(100);
-            modelBuilder.Entity<Team>().Property(t => t.Stadium).HasMaxLength(150);
-            modelBuilder.Entity<Team>().Property(t => t.LogoUrl).HasMaxLength(500);
-
-            modelBuilder.Entity<League>().Property(l => l.LeagueName).HasMaxLength(100).IsRequired();
-            modelBuilder.Entity<League>().Property(l => l.Country).HasMaxLength(100);
-            modelBuilder.Entity<League>().Property(l => l.LogoUrl).HasMaxLength(500);
-
-            modelBuilder.Entity<Season>().Property(s => s.SeasonName).HasMaxLength(20).IsRequired();
-
-            modelBuilder.Entity<Match>().Property(m => m.Stadium).HasMaxLength(150);
-            modelBuilder.Entity<Match>().Property(m => m.Referee).HasMaxLength(100);
-
-            modelBuilder.Entity<Goal>().Property(g => g.PlayerName).HasMaxLength(100).IsRequired();
-
-            modelBuilder.Entity<MatchEvent>().Property(me => me.PlayerName).HasMaxLength(100);
-            modelBuilder.Entity<MatchEvent>().Property(me => me.Description).HasMaxLength(500);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Eğer bu takımı silmeye çalışırsan ve bu takım maçlarda kullanılıyorsa silme.

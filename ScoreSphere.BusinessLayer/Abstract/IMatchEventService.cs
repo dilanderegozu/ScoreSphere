@@ -1,4 +1,5 @@
-﻿using ScoreSphere.DtoLayer.MatchEventDtos;
+﻿using ScoreSphere.DtoLayer.MatchDtos;
+using ScoreSphere.DtoLayer.MatchEventDtos;
 using ScoreSphere.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace ScoreSphere.BusinessLayer.Abstract
         Task<ResultMatchEventDto?> TGetByIdAsync(int id);
         Task TInsertAsync(CreateMatchEventDto dto);
         Task TDeleteAsync(int id);
+    
     }
 }

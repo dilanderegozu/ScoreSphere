@@ -34,5 +34,14 @@ namespace ScoreSphere.WebApi.Controllers
             await _matchStatService.TUpdateAsync(dto);
             return Ok(new { message = "İstatistik güncellendi." });
         }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateMatchStatDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _matchStatService.TInsertAsync(dto);
+            return Ok(new { message = "İstatistik eklendi." });
+        }
     }
 }

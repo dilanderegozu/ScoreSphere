@@ -12,5 +12,6 @@ namespace ScoreSphere.BusinessLayer.Abstract
 
         Task<List<ResultMatchDto>> GetMatchesByWeekAsync(int seasonId, int week);
         Task<List<ResultMatchDto>> GetMatchesByStatusAsync(string status);
+        Task<MatchDetailDto?> GetMatchDetailAsync(int id);
     }
 }
