@@ -1,0 +1,453 @@
+<!DOCTYPE html><html class="dark" lang="tr" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ScoreSphere - Takım Yönetimi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#45464f",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "on-surface-variant": "#c6c5d0",
+                    "on-tertiary-fixed": "#121c2a",
+                    "inverse-surface": "#dce3f0",
+                    "primary-fixed": "#dce1ff",
+                    "tertiary-container": "#bdc7db",
+                    "surface-tint": "#b7c4ff",
+                    "secondary-container": "#404a59",
+                    "on-primary-fixed-variant": "#374476",
+                    "tertiary": "#d9e3f7",
+                    "tertiary-fixed-dim": "#bdc7db",
+                    "error-container": "#93000a",
+                    "surface": "#0d141d",
+                    "outline": "#90909a",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#2a313b",
+                    "tertiary-fixed": "#d9e3f7",
+                    "surface-container-highest": "#2e353f",
+                    "on-error-container": "#ffdad6",
+                    "inverse-primary": "#4f5c90",
+                    "surface-bright": "#333a44",
+                    "surface-container": "#192029",
+                    "surface-dim": "#0d141d",
+                    "on-surface": "#dce3f0",
+                    "on-background": "#dce3f0",
+                    "surface-container-lowest": "#080f17",
+                    "surface-container-high": "#232a34",
+                    "primary-container": "#b7c4ff",
+                    "on-primary-fixed": "#071749",
+                    "background": "#0d141d",
+                    "on-tertiary": "#273140",
+                    "surface-container-low": "#151c25",
+                    "secondary-fixed-dim": "#bdc7d9",
+                    "secondary": "#bdc7d9",
+                    "on-secondary-fixed-variant": "#3d4756",
+                    "on-secondary": "#27313f",
+                    "on-primary-container": "#435083",
+                    "on-secondary-container": "#afb9cb",
+                    "primary": "#dde1ff",
+                    "on-tertiary-container": "#495364",
+                    "surface-variant": "#2e353f",
+                    "secondary-fixed": "#d9e3f6",
+                    "on-tertiary-fixed-variant": "#3d4757",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed": "#121c2a",
+                    "on-primary": "#1f2d5e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Montserrat"],
+                    "body-md": ["Montserrat"],
+                    "display-lg": ["Montserrat"],
+                    "label-lg": ["Montserrat"],
+                    "body-lg": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "label-sm": ["Montserrat"],
+                    "headline-md": ["Montserrat"],
+                    "headline-lg": ["Montserrat"]
+            },
+            "fontSize": {
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d141d;
+            font-family: 'Montserrat', sans-serif;
+            color: #dce3f0;
+        }
+        .glass-card {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2e353f;
+            border-radius: 10px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container border-r border-white/10 flex flex-col py-6 px-4 gap-2 shadow-sm z-50">
+<div class="px-4 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">ScoreSphere</h1>
+<p class="text-on-surface-variant font-label-sm">Admin Dashboard</p>
+</div>
+<nav class="flex flex-col gap-1 overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/20 transition-all duration-200 rounded-full font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="">Ana Sayfa</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/20 transition-all duration-200 rounded-full font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="">Lig Yönetimi</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/20 transition-all duration-200 rounded-full font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="">Sezon Yönetimi</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/20 transition-all duration-200 rounded-full font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="">Fikstür Yönetimi</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/20 transition-all duration-200 rounded-full font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="">Puan Durumu</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/20 transition-all duration-200 rounded-full font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined">sports_soccer</span>
+<span class="">Maç Yönetimi</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-full px-4 py-3 shadow-[0_0_15px_rgba(183,196,255,0.3)] transition-transform active:scale-95 font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-bold">Takım Yönetimi</span>
+</a>
+</nav>
+
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-[280px] min-h-screen flex flex-col">
+<!-- Top App Bar -->
+
+<!-- Page Content Canvas -->
+<div class="p-8 flex flex-col gap-8 max-w-[1440px] mx-auto w-full">
+<!-- Header Section -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Takım Yönetimi</h2>
+<p class="font-body-md text-on-surface-variant mt-1">Sistemdeki tüm kulüpleri yönetin ve yeni kayıtlar oluşturun.</p>
+</div>
+<button class="bg-primary-fixed-dim text-on-primary-fixed px-6 py-3 rounded-full flex items-center gap-2 font-label-lg shadow-lg hover:shadow-primary/20 hover:scale-[1.02] transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                    Yeni Takım Ekle
+                </button>
+</div>
+<!-- Stats Overview (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="glass-card p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-primary/10 text-primary rounded-xl material-symbols-outlined">groups</span>
+<span class="text-primary font-label-sm">+12%</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-lg">Toplam Takım</p>
+<h3 class="text-headline-md font-bold text-on-surface">428</h3>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-tertiary/10 text-tertiary rounded-xl material-symbols-outlined">location_on</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-lg">Aktif Şehirler</p>
+<h3 class="text-headline-md font-bold text-on-surface">54</h3>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-secondary/10 text-secondary rounded-xl material-symbols-outlined">stadium</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-lg">Kayıtlı Stadyum</p>
+<h3 class="text-headline-md font-bold text-on-surface">192</h3>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="p-2 bg-error/10 text-error rounded-xl material-symbols-outlined">warning</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-lg">Onay Bekleyen</p>
+<h3 class="text-headline-md font-bold text-on-surface">14</h3>
+</div>
+</div>
+</div>
+<!-- Main Table Section -->
+<div class="glass-card rounded-2xl overflow-hidden border border-white/5">
+<div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-container-high/50">
+<h4 class="font-title-lg text-on-surface">Takım Listesi</h4>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-bright rounded-lg text-on-surface-variant border border-outline-variant">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-2 hover:bg-surface-bright rounded-lg text-on-surface-variant border border-outline-variant">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/30">
+<th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5">Takım Logosu</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5">Takım Adı</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5">Şehir</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5">Stadyum</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5">Lig</th>
+<th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5 text-right">İşlemler</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<!-- Row 1 -->
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-xl flex items-center justify-center p-2 group-hover:scale-105 transition-transform border border-white/10 shadow-inner">
+<div class="w-full h-full bg-cover bg-center rounded-sm" data-alt="A minimalist and iconic professional football club crest featuring a stylized golden eagle on a navy blue circular background. High-contrast vector design with sharp edges, premium sports brand identity aesthetic, professional sports league style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAKUj4A8J57pLX_7wsREg58LboXzqKN6vRVlUGu0luBT07K_hp5CmGdud5nUag3xRIfTBKOc-x5ZDc6uoQJ7EZMfn6DTncqCXKyfTttLD_07zOM_OD0nG2VeHJKcM6ift3orinA11eOUXTEW2-JZQuDsFl9fjQ3bOyjOZoPZHHJAvXw8GGx4opq4S2cy8fvSVokkCrW4Sawi9kmiQhHaoZGxd_xCvl0RPLZNeXmzVArRRixQOqOhsGe')"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-title-lg text-on-surface group-hover:text-primary transition-colors">İstanbul Yıldızları SK</span>
+<span class="font-label-sm text-on-surface-variant">Kuruluş: 1954</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">location_city</span>
+<span class="font-body-md text-on-surface">İstanbul</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Yıldız Arena</td>
+<td class="px-6 py-4">
+<span class="bg-primary/10 text-primary-fixed-dim px-3 py-1 rounded-full font-label-sm border border-primary/20">Süper Lig</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-surface-bright rounded-lg text-on-surface-variant transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 hover:bg-error/10 rounded-lg text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-xl flex items-center justify-center p-2 group-hover:scale-105 transition-transform border border-white/10 shadow-inner">
+<div class="w-full h-full bg-cover bg-center rounded-sm" data-alt="A modern football logo design featuring abstract mountain peaks in emerald green and silver. Clean minimalist lines, circular badge style, contemporary sports aesthetic for a professional club. The design represents strength and nature in a dark-mode optimized color scheme." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAzN9QzQZxJXLjRkpkJkyzkQvl4QQ_62Bn6LkMvwyplm2mLjGmUcBdcX5W2I4yz5abfuqENCqW70vVkk452AACSV2-6xLbtXOAysqWc16IZSzvGl69px4MZFbna7pjueJ404J3FUYNOImjACuaR73dXgg9mPjQfQX_aYke72HwUDjsKDMQbMpwCs7OdNRJqfjekcNofaoFUwpfE6Z2RLHZ-PA35BTwxwGUWasH6GsEaImAyOSbpPe8X')"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-title-lg text-on-surface group-hover:text-primary transition-colors">Ankara Kartalları</span>
+<span class="font-label-sm text-on-surface-variant">Kuruluş: 1982</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">location_city</span>
+<span class="font-body-md text-on-surface">Ankara</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Başkent Stadyumu</td>
+<td class="px-6 py-4">
+<span class="bg-primary/10 text-primary-fixed-dim px-3 py-1 rounded-full font-label-sm border border-primary/20">Süper Lig</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-surface-bright rounded-lg text-on-surface-variant transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 hover:bg-error/10 rounded-lg text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-xl flex items-center justify-center p-2 group-hover:scale-105 transition-transform border border-white/10 shadow-inner">
+<div class="w-full h-full bg-cover bg-center rounded-sm" data-alt="A professional sports team logo displaying a stylized sun rising over ocean waves in vibrant orange and teal. Circular vector badge with elegant typography frame. Modern, energetic coastal aesthetic for a professional football team based in a Mediterranean city. High-end branding design." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDknlMDZvnZDfZZLipomVwzb5dgflmyporm3j32zXhmwGx0rF-k938jYURtXqEoNaek58o05x1XGjV0kClDQG9IcGMXlYBoU15vWTBUaS3ZSiLRPnIdqxRWLZjQOLHYlyQHJJKlYLXRb0JmyYY5p8oQn-__HaOanpulsrUcll-Pb7bFbo7peyhQTGYJehQsItgmUYK8KVK17_aJJ0beFZjnyYgVHlBN0b1GSHpXISY3x7TqvuXGJckm')"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-title-lg text-on-surface group-hover:text-primary transition-colors">İzmir Körfez Gücü</span>
+<span class="font-label-sm text-on-surface-variant">Kuruluş: 1928</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">location_city</span>
+<span class="font-body-md text-on-surface">İzmir</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Alsancak Arena</td>
+<td class="px-6 py-4">
+<span class="bg-secondary/10 text-secondary-fixed-dim px-3 py-1 rounded-full font-label-sm border border-secondary/20">1. Lig</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-surface-bright rounded-lg text-on-surface-variant transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 hover:bg-error/10 rounded-lg text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-xl flex items-center justify-center p-2 group-hover:scale-105 transition-transform border border-white/10 shadow-inner">
+<div class="w-full h-full bg-cover bg-center rounded-sm" data-alt="A heraldic style football logo featuring a torch with a blue flame inside a shield. Deep royal blue and white colors, sophisticated traditional design with a modern minimalist twist. Represents enlightenment and passion in sports. Premium dark-mode dashboard compatible icon." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBs-9KNdWRTjXbEAw-G5Og5k6rGDoINiDPnWJjGs6NyZkCdbzrnJWLr8EIUe3k5FrRzFv0daeDQEI7DtWIOjDuBl8v6F9OV0O6Tf0nnKJ6H4v5B22zPuHfVEszpIwh09KbI4OuvkntmfVeTKS1SGUNsSUflu_Z96x7Qwpa1qb9xKzymyuB6fNCfvT_yLj0_w-4hHMBFes5J1ThdJzy1cc_IkRwFaRn5zTlYxZsc7_tenKU1KjYzEuCH')"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-title-lg text-on-surface group-hover:text-primary transition-colors">Bursa Meşale Spor</span>
+<span class="font-label-sm text-on-surface-variant">Kuruluş: 1963</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">location_city</span>
+<span class="font-body-md text-on-surface">Bursa</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface">Atatürk Şehir Stadı</td>
+<td class="px-6 py-4">
+<span class="bg-secondary/10 text-secondary-fixed-dim px-3 py-1 rounded-full font-label-sm border border-secondary/20">1. Lig</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-surface-bright rounded-lg text-on-surface-variant transition-colors"><span class="material-symbols-outlined">edit</span></button>
+<button class="p-2 hover:bg-error/10 rounded-lg text-error transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-6 bg-surface-container-high/30 border-t border-white/5 flex items-center justify-between">
+<p class="font-label-sm text-on-surface-variant">Toplam 428 takımdan 1-4 arası gösteriliyor</p>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-outline-variant rounded-full text-on-surface-variant hover:bg-surface-bright disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-sm leading-none">chevron_left</span>
+</button>
+<button class="w-10 h-10 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center font-label-lg">1</button>
+<button class="w-10 h-10 hover:bg-surface-bright rounded-full flex items-center justify-center font-label-lg text-on-surface-variant transition-colors">2</button>
+<button class="w-10 h-10 hover:bg-surface-bright rounded-full flex items-center justify-center font-label-lg text-on-surface-variant transition-colors">3</button>
+<button class="px-4 py-2 border border-outline-variant rounded-full text-on-surface-variant hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-sm leading-none">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Details/Legend -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+<div class="glass-card p-8 rounded-2xl border border-white/5 flex flex-col gap-4">
+<h5 class="font-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">info</span>
+                        Takım Yönetim İpuçları
+                    </h5>
+<ul class="flex flex-col gap-3">
+<li class="flex items-start gap-3">
+<span class="w-2 h-2 mt-2 bg-primary rounded-full shrink-0"></span>
+<p class="font-body-md text-on-surface-variant">Yeni bir lig eklemeden önce takımların stadyum kapasitelerini kontrol etmeyi unutmayın.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="w-2 h-2 mt-2 bg-primary rounded-full shrink-0"></span>
+<p class="font-body-md text-on-surface-variant">Logo görsellerinin şeffaf PNG ve minimum 400x400px çözünürlükte olması önerilir.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="w-2 h-2 mt-2 bg-primary rounded-full shrink-0"></span>
+<p class="font-body-md text-on-surface-variant">Şehir ve stadyum eşleşmeleri otomatik fikstür oluşturma için kritiktir.</p>
+</li>
+</ul>
+</div>
+<div class="relative rounded-2xl overflow-hidden group">
+<div class="absolute inset-0 z-10 bg-gradient-to-t from-surface-container via-surface-container/40 to-transparent"></div>
+<div class="h-full w-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="An expansive, wide-angle interior view of a futuristic, high-tech football stadium lobby with glowing neon accents, massive digital screens showing data analytics, and sleek glass architecture. The mood is sophisticated and high-end, featuring deep navy and neon blue lighting that aligns with the premium dashboard theme." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVuQnPBLKbNOBvHMgDOY_1XVTR0DshKmHcgjcB2D7paMZ79FEM-uVXAXvbvHHmkpLSQ2LtynBCfmNO6srpw84l9OYOuJEDJuIMqEm69oMzV-vAIelK7gEdx9f2VHVNoYl4SjI4KEFpGZAsd94Ahe0wZNxH6nBHi4X7q32NLIn6JWLbKhiWaTD6eIyjRai9hwaNk3TiJbqLxByDDr7tKjIHiaFM6WNFPjruPl-cFfq1bfq25Qrin96K')"></div>
+<div class="absolute bottom-0 left-0 p-8 z-20 w-full">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm mb-2 inline-block">Yeni Özellik</span>
+<h5 class="font-headline-md text-on-surface">Stadyum Analitiği Yayında</h5>
+<p class="font-body-md text-on-surface-variant">Artık takımların stadyum doluluk oranlarını ve maç başı gelirlerini analiz edebilirsiniz.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for button hover effects
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Search bar interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = searchInput.parentElement;
+        
+        searchInput.addEventListener('focus', () => {
+            searchContainer.classList.add('ring-2', 'ring-primary-fixed-dim', 'border-primary-fixed-dim');
+            searchContainer.classList.remove('border-outline-variant');
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchContainer.classList.remove('ring-2', 'ring-primary-fixed-dim', 'border-primary-fixed-dim');
+            searchContainer.classList.add('border-outline-variant');
+        });
+    </script>
+
+
+
+</body></html>

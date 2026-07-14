@@ -1,0 +1,140 @@
+﻿@model ScoreSphere.WebUI.Areas.Admin.Models.FixtureManagementViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<main class="ml-[280px] min-h-screen p-8">
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <h2 class="font-headline-lg text-headline-lg text-on-surface">Maç Yönetimi</h2>
+            <p class="text-on-surface-variant font-body-md mt-1">@Model.LeagueName - Hafta bazlı maç programını yönetin.</p>
+        </div>
+
+        <div class="flex gap-3">
+            <select id="leagueSelect" class="bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant text-on-surface font-bold cursor-pointer focus:outline-none focus:border-primary">
+                @foreach (var league in Model.Leagues)
+                {
+                    <option value="@league.SeasonId" selected="@(league.LeagueId == Model.CurrentLeagueId)">
+                        @league.LeagueName
+                    </option>
+                }
+            </select>
+
+            <select id="weekSelect" class="bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant text-on-surface font-bold cursor-pointer focus:outline-none focus:border-primary">
+                <option value="all" selected="@(Model.CurrentWeek == "all")">Hepsi</option>
+                @foreach (var w in Model.AvailableWeeks)
+                {
+                    <option value="@w" selected="@(Model.CurrentWeek == w.ToString())">@w. Hafta</option>
+                }
+            </select>
+
+            <a asp-area="Admin" asp-controller="AdminFixture" asp-action="Create" asp-route-seasonId="@Model.SeasonId"
+               class="bg-primary-container text-on-primary-container px-5 py-2 rounded-lg font-bold flex items-center gap-2 hover:brightness-110 transition-all">
+                <span class="material-symbols-outlined text-lg">add</span>
+                Maç Ekle
+            </a>
+        </div>
+    </div>
+
+    <div class="glass-card rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-surface-container-high/50">
+                    <tr>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Ev Sahibi</th>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">Skor</th>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Deplasman</th>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Tarih</th>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Durum</th>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-right">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    @if (!Model.Matches.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-on-surface-variant">Bu haftaya ait maç bulunamadı.</td>
+                        </tr>
+                    }
+                    @foreach (var match in Model.Matches)
+                    {
+                        <tr class="hover:bg-white/[0.02] transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="@match.HomeTeamLogoUrl" class="w-8 h-8 object-contain" alt="@match.HomeTeamName">
+                                    <span class="font-body-md text-on-surface font-semibold">@match.HomeTeamName</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @if (match.Status == "Upcoming")
+                                {
+                                    <span class="text-on-surface-variant">vs</span>
+                                }
+                                else
+                                {
+                                    <span class="font-bold text-on-surface">@match.HomeScore - @match.AwayScore</span>
+                                }
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="@match.AwayTeamLogoUrl" class="w-8 h-8 object-contain" alt="@match.AwayTeamName">
+                                    <span class="font-body-md text-on-surface font-semibold">@match.AwayTeamName</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-on-surface-variant font-body-md">
+                                @match.MatchDate.ToString("dd MMM yyyy, HH:mm")
+                            </td>
+                            <td class="px-6 py-4">
+                                @{
+                                    string statusColor = match.Status switch
+                                    {
+                                        "Live" => "text-yellow-400",
+                                        "Finished" => "text-green-400",
+                                        _ => "text-on-surface-variant"
+                                    };
+                                }
+                                <span class="@statusColor font-label-sm font-bold">@match.Status</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <a asp-area="Admin" asp-controller="AdminFixture" asp-action="Edit" asp-route-id="@match.MatchId"
+                                       class="p-2 hover:bg-surface-variant rounded-lg text-on-surface-variant hover:text-primary transition-colors inline-block">
+                                        <span class="material-symbols-outlined text-xl">edit</span>
+                                    </a>
+                                    <button type="button" onclick="deleteMatch(@match.MatchId)"
+                                            class="p-2 hover:bg-surface-variant rounded-lg text-on-surface-variant hover:text-error transition-colors">
+                                        <span class="material-symbols-outlined text-xl">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+     document.getElementById("leagueSelect").addEventListener("change", function () {
+        window.location.href = `/Admin/AdminFixture/Index?seasonId=${this.value}`;
+    });
+
+    document.getElementById("weekSelect").addEventListener("change", function () {
+        const seasonId = document.getElementById("leagueSelect").value;
+        window.location.href = `/Admin/AdminFixture/Index?seasonId=${seasonId}&week=${this.value}`;
+    });
+
+    function deleteMatch(id) {
+        if (!confirm('Bu maçı silmek istediğinize emin misiniz?')) return;
+
+        fetch(`/Admin/AdminFixture/Delete/${id}`, { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Maç silinirken bir hata oluştu.');
+                }
+            });
+    }
+</script>

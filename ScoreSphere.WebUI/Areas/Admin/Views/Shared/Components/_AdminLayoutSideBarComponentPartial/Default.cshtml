@@ -1,0 +1,57 @@
+﻿@{
+    string ActiveClass(string controllerName)
+    {
+        var isActive = string.Equals(
+            ViewContext.RouteData.Values["controller"]?.ToString(),
+            controllerName,
+            StringComparison.OrdinalIgnoreCase);
+
+        return isActive
+            ? "bg-primary-container text-on-primary-container shadow-[0_0_15px_rgba(183,196,255,0.3)]"
+            : "text-on-surface-variant hover:bg-surface-variant/20";
+    }
+}
+
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container dark:bg-surface-container border-r border-white/10 shadow-sm flex flex-col py-6 px-4 gap-2 z-50">
+    <div class="px-4 mb-8">
+        <h1 class="font-headline-md text-headline-md font-extrabold text-primary dark:text-primary-fixed-dim tracking-tight">ScoreSphere</h1>
+        <p class="text-on-surface-variant font-label-sm text-label-sm opacity-70">Admin Dashboard</p>
+    </div>
+    <nav class="flex flex-col gap-1">
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+           class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 @ActiveClass("Dashboard")">
+            <span class="material-symbols-outlined">home</span>
+            <span class="font-body-md text-body-md font-semibold">Ana Sayfa</span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="AdminLeague" asp-action="Index"
+           class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 @ActiveClass("AdminLeague")">
+            <span class="material-symbols-outlined">emoji_events</span>
+            <span class="font-body-md text-body-md">Lig Yönetimi</span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="AdminSeason" asp-action="Index"
+           class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 @ActiveClass("AdminSeason")">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="font-body-md text-body-md">Sezon Yönetimi</span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="AdminFixture" asp-action="Index"
+           class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 @ActiveClass("AdminFixture")">
+            <span class="material-symbols-outlined">event_note</span>
+            <span class="font-body-md text-body-md">Maç Yönetimi</span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="AdminTeam" asp-action="Index"
+           class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 @ActiveClass("AdminTeam")">
+            <span class="material-symbols-outlined">groups</span>
+            <span class="font-body-md text-body-md">Takım Yönetimi</span>
+        </a>
+
+        <a asp-area="Admin" asp-controller="AdminStanding" asp-action="Index"
+           class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 @ActiveClass("AdminStanding")">
+            <span class="material-symbols-outlined">leaderboard</span>
+            <span class="font-body-md text-body-md">Puan Durumu</span>
+        </a>
+    </nav>
+</aside>

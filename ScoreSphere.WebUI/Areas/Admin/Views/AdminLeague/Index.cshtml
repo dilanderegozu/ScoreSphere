@@ -1,0 +1,219 @@
+﻿@model ScoreSphere.WebUI.Areas.Admin.Models.LeagueIndexViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<main class="ml-[280px] pt-24 px-8 pb-12 min-h-screen">
+    <!-- Header Section -->
+    <section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+        <div>
+            <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Lig Yönetimi</h2>
+            <nav class="flex items-center gap-2 text-on-surface-variant font-label-sm">
+                <span class="hover:text-primary transition-colors cursor-pointer">Dashboard</span>
+                <span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+                <span class="text-primary font-semibold">Ligler</span>
+            </nav>
+        </div>
+        <a asp-action="CreateLeague" class="flex items-center gap-2 bg-primary-fixed-dim text-on-primary-fixed px-6 py-3 rounded-2xl font-label-lg hover:shadow-[0_0_20px_rgba(183,196,255,0.4)] transition-all active:scale-95 group">
+            <span class="material-symbols-outlined font-bold group-hover:rotate-90 transition-transform">add</span>
+            Yeni Lig Ekle
+        </a>
+    </section>
+    <!-- Stats Grid (Bento Style) -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="glass-card p-6 rounded-3xl flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div class="p-3 bg-primary/10 rounded-2xl">
+                    <span class="material-symbols-outlined text-primary">public</span>
+                </div>
+            </div>
+            <div class="mt-4">
+                <span class="text-3xl font-bold text-on-surface">@Model.TotalLeagues</span>
+                <p class="text-on-surface-variant font-label-sm mt-1">Aktif Lig Sayısı</p>
+            </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div class="p-3 bg-secondary/10 rounded-2xl">
+                    <span class="material-symbols-outlined text-secondary">groups</span>
+                </div>
+            </div>
+            <div class="mt-4">
+                <span class="text-3xl font-bold text-on-surface">@Model.TotalTeams</span>
+                <p class="text-on-surface-variant font-label-sm mt-1">Toplam Takım</p>
+            </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div class="p-3 bg-tertiary/10 rounded-2xl">
+                    <span class="material-symbols-outlined text-tertiary">history</span>
+                </div>
+            </div>
+            <div class="mt-4">
+                <span class="text-3xl font-bold text-on-surface">@DateTime.Now.Year</span>
+                <p class="text-on-surface-variant font-label-sm mt-1">Güncel Yıl</p>
+            </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl border-l-4 border-l-primary flex flex-col justify-between overflow-hidden relative">
+            <div class="relative z-10">
+                <p class="text-on-surface-variant font-label-sm mb-1">Hızlı Erişim</p>
+                <h4 class="font-title-lg text-title-lg text-on-surface mb-4">Yeni Lig Ekle</h4>
+                <a asp-action="CreateLeague" class="text-primary font-bold text-xs flex items-center gap-1 hover:gap-2 transition-all">
+                    OLUŞTUR <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            <div class="absolute -right-4 -bottom-4 opacity-10">
+                <span class="material-symbols-outlined text-8xl">auto_awesome</span>
+            </div>
+        </div>
+    </div>
+    <!-- Leagues Table Section -->
+    <div class="glass-card rounded-[2rem] overflow-hidden">
+        <div class="p-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h3 class="font-title-lg text-title-lg text-on-surface">Mevcut Ligler Listesi</h3>
+                <p class="text-on-surface-variant text-sm mt-1">Toplam @Model.TotalLeagues kayıt arasından sistemdeki tüm ligleri yönetin.</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="p-2.5 rounded-xl border border-white/10 text-on-surface-variant hover:bg-white/5 transition-colors">
+                </button>
+                <button class="p-2.5 rounded-xl border border-white/10 text-on-surface-variant hover:bg-white/5 transition-colors">
+                </button>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-white/5">
+                        <th class="px-8 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider text-xs">Lig Adı</th>
+                        <th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider text-xs">Ülke</th>
+                        <th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider text-xs text-center">Takım Sayısı</th>
+                        <th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider text-xs">Sezon</th>
+                        <th class="px-6 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider text-xs">Durum</th>
+                        <th class="px-8 py-4 font-label-lg text-on-surface-variant uppercase tracking-wider text-xs text-right">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+
+                    @foreach (var item in Model.Leagues)
+                    {
+                        <tr class="table-row-hover group">
+                            <td class="px-8 py-5">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/20">
+                                        <span class="material-symbols-outlined text-primary" data-icon="trophy">trophy</span>
+                                    </div>
+                                    <span class="font-body-lg font-semibold text-on-surface">@item.LeagueName</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-2 text-on-surface">
+                                    <img src="@item.LogoUrl" alt="@item.Country" class="w-6 h-4 object-cover rounded-sm border border-white/10">
+                                    <span class="font-body-md">@item.Country</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <span class="bg-surface-variant px-3 py-1 rounded-full text-xs font-bold text-on-primary-container">@item.TeamCount</span>
+                            </td>
+                            <td class="px-6 py-5 text-on-surface-variant font-body-md">@item.SeasonName</td>
+                            <td class="px-6 py-5">
+                                @{
+                                    string statusTextColor = item.Status switch
+                                    {
+                                        "Devam Ediyor" => "text-yellow-400",
+                                        "Tamamlandı" => "text-green-400",
+                                        "Planlandı" => "text-on-surface-variant",
+                                        _ => "text-on-surface-variant"
+                                    };
+                                    string statusDotColor = item.Status switch
+                                    {
+                                        "Devam Ediyor" => "bg-yellow-400",
+                                        "Tamamlandı" => "bg-green-400",
+                                        "Planlandı" => "bg-on-surface-variant",
+                                        _ => "bg-on-surface-variant"
+                                    };
+                                }
+                                <span class="flex items-center gap-1.5 @statusTextColor font-label-sm">
+                                    <span class="w-2 h-2 @statusDotColor rounded-full @(item.Status == "Devam Ediyor" ? "animate-pulse" : "")"></span>
+                                    @item.Status
+                                </span>
+                            </td>
+                            <td class="px-8 py-5 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <a asp-area="Admin"
+                                       asp-controller="AdminLeague"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.LeagueId"
+                                       class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-all inline-block"
+                                       title="Düzenle">
+                                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                                    </a>
+                                    <button type="button" onclick="deleteLeague(@item.LeagueId)" class="p-2 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg transition-all" title="Sil">
+                                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    <!-- Table Row 1 -->
+
+                    
+                </table>
+            </div>
+            <!-- Pagination Footer -->
+            <div class="p-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-on-surface-variant text-sm font-label-sm">Gösterilen: <span class="text-on-surface font-bold">1 - 10</span> / Toplam: <span class="text-on-surface font-bold">12</span></p>
+                <div class="flex gap-1">
+                    <button class="p-2 text-on-surface-variant hover:bg-white/5 rounded-lg disabled:opacity-30" disabled="">
+                        <span class="material-symbols-outlined" data-icon="first_page">first_page</span>
+                    </button>
+                    <button class="p-2 text-on-surface-variant hover:bg-white/5 rounded-lg disabled:opacity-30" disabled="">
+                        <span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+                    </button>
+                    <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary font-bold shadow-md">1</button>
+                    <button class="w-10 h-10 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-white/5 transition-all">2</button>
+                    <button class="p-2 text-on-surface-variant hover:bg-white/5 rounded-lg">
+                        <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+                    </button>
+                    <button class="p-2 text-on-surface-variant hover:bg-white/5 rounded-lg">
+                        <span class="material-symbols-outlined" data-icon="last_page">last_page</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const notifyBtn = document.querySelector('[data-icon="notifications"]')?.parentElement;
+        if (notifyBtn) {
+            notifyBtn.addEventListener('click', () => {
+                const badge = notifyBtn.querySelector('.absolute');
+                if (badge) badge.remove();
+            });
+        }
+
+        const searchInput = document.querySelector('input[type="text"]');
+        if (searchInput) {
+            const searchContainer = searchInput.parentElement;
+            searchInput.addEventListener('focus', () => {
+                searchContainer.classList.add('border-primary/40', 'shadow-[0_0_15px_rgba(183,196,255,0.1)]');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchContainer.classList.remove('border-primary/40', 'shadow-[0_0_15px_rgba(183,196,255,0.1)]');
+            });
+        }
+                function deleteLeague(id) {
+            if (!confirm('Bu ligi silmek istediğinize emin misiniz?')) return;
+
+            fetch(`/Admin/League/Delete/${id}`, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Lig silinirken bir hata oluştu.');
+                    }
+                });
+        }
+    </script>

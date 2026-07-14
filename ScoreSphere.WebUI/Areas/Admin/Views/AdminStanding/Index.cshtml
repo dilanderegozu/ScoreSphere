@@ -1,0 +1,126 @@
+﻿@model ScoreSphere.WebUI.Areas.Admin.Models.AdminStandingViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="ml-[280px] min-h-screen p-8">
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <h2 class="font-headline-lg text-headline-lg text-on-surface">Puan Durumu</h2>
+            <p class="text-on-surface-variant font-body-md mt-1">@Model.LeagueName - Güncel lig sıralaması.</p>
+        </div>
+
+        <div class="flex gap-3">
+            <select id="leagueSelect" class="bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant text-on-surface font-bold cursor-pointer focus:outline-none focus:border-primary">
+                @foreach (var league in Model.Leagues)
+                {
+                    <option value="@league.LeagueId" selected="@(league.LeagueId == Model.LeagueId)">
+                        @league.LeagueName
+                    </option>
+                }
+            </select>
+
+            <select id="seasonSelect" class="bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant text-on-surface font-bold cursor-pointer focus:outline-none focus:border-primary">
+                @foreach (var season in Model.Seasons)
+                {
+                    <option value="@season.SeasonId" selected="@(season.SeasonId == Model.SeasonId)">
+                        @season.SeasonName
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="glass-card rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-surface-container-high/50">
+                    <tr>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider w-12 text-center">#</th>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider">Takım</th>
+                        <th class="px-4 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">O</th>
+                        <th class="px-4 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">G</th>
+                        <th class="px-4 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">B</th>
+                        <th class="px-4 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">M</th>
+                        <th class="px-4 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">A</th>
+                        <th class="px-4 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">Y</th>
+                        <th class="px-4 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">AV</th>
+                        <th class="px-6 py-4 font-label-sm text-primary uppercase tracking-wider text-center">P</th>
+                        <th class="px-6 py-4 font-label-sm text-on-surface-variant uppercase tracking-wider text-center">Form</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    @if (!Model.Standings.Any())
+                    {
+                        <tr>
+                            <td colspan="11" class="px-6 py-8 text-center text-on-surface-variant">Bu sezon için henüz puan durumu verisi yok.</td>
+                        </tr>
+                    }
+                    @{
+                        int rank = 0;
+                    }
+                    @foreach (var team in Model.Standings)
+                    {
+                        rank++;
+                        <tr class="hover:bg-white/[0.02] transition-colors">
+                            <td class="px-6 py-4 text-center">
+                                <span class="flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm mx-auto @(rank <= 4 ? "bg-primary/10 text-primary" : "bg-surface-container-highest text-on-surface")">
+                                    @rank
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="@team.LogoUrl" class="w-8 h-8 object-contain" alt="@team.TeamName">
+                                    <span class="font-body-lg font-bold text-on-surface">@team.TeamName</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 text-center">@team.Played</td>
+                            <td class="px-4 py-4 text-center">@team.Won</td>
+                            <td class="px-4 py-4 text-center">@team.Drawn</td>
+                            <td class="px-4 py-4 text-center">@team.Lost</td>
+                            <td class="px-4 py-4 text-center">@team.GoalsFor</td>
+                            <td class="px-4 py-4 text-center">@team.GoalsAgainst</td>
+                            <td class="px-4 py-4 text-center">@(team.GoalDifference >= 0 ? "+" : "")@team.GoalDifference</td>
+                            <td class="px-6 py-4 text-center font-black text-primary text-lg">@team.Points</td>
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center gap-1.5">
+                                    @foreach (var result in team.Form.TakeLast(5))
+                                    {
+                                        string letter = result switch { "W" => "G", "D" => "B", "L" => "M", _ => "-" };
+                                        string bgClass = result switch
+                                        {
+                                            "W" => "bg-green-400/20 text-green-400",
+                                            "D" => "bg-on-surface-variant/20 text-on-surface-variant",
+                                            "L" => "bg-error/20 text-error",
+                                            _ => "bg-outline text-on-surface"
+                                        };
+                                        <div class="w-6 h-6 rounded @bgClass flex items-center justify-center text-[10px] font-bold">@letter</div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+</main>
+
+<script>
+    document.getElementById("leagueSelect").addEventListener("change", function () {
+        window.location.href = `/Admin/AdminStanding/Index?seasonId=${this.value}`;
+    });
+        document.getElementById("leagueSelect").addEventListener("change", function () {
+     
+        window.location.href = `/Admin/AdminStanding/Index?leagueId=${this.value}`;
+    });
+
+    document.getElementById("seasonSelect").addEventListener("change", function () {
+        const leagueId = document.getElementById("leagueSelect").value;
+        window.location.href = `/Admin/AdminStanding/Index?leagueId=${leagueId}&seasonId=${this.value}`;
+    });
+  
+</script>

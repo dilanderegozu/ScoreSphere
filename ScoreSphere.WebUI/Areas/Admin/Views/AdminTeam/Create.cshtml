@@ -1,0 +1,121 @@
+﻿@model ScoreSphere.WebUI.Dtos.TeamDtos.CreateTeamDto
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="ml-[280px] min-h-screen p-8 max-w-[1000px]">
+
+    <div class="mb-8">
+        <div class="flex items-center gap-3 mb-2">
+            <a asp-action="Index" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-bright text-on-surface transition-all">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <div>
+                <h2 class="font-headline-lg text-headline-lg text-on-surface">👥 Yeni Takım Ekle</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant">Sisteme yeni bir futbol takımı ekleyin.</p>
+            </div>
+        </div>
+    </div>
+
+    <div asp-validation-summary="All" class="text-error mb-4"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- Form -->
+        <div class="lg:col-span-7 glass-card rounded-[24px] p-8 shadow-xl">
+            <form asp-action="Create" method="post" class="space-y-6" id="teamForm">
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="TeamName">Takım Adı</label>
+                    <input asp-for="TeamName" id="teamName" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface" placeholder="Örn: Galatasaray">
+                    <span asp-validation-for="TeamName" class="text-error text-sm"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="City">Şehir</label>
+                    <input asp-for="City" id="city" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface" placeholder="Örn: İstanbul">
+                    <span asp-validation-for="City" class="text-error text-sm"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="Stadium">Stadyum</label>
+                    <input asp-for="Stadium" id="stadium" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface" placeholder="Örn: RAMS Park">
+                    <span asp-validation-for="Stadium" class="text-error text-sm"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="LogoUrl">Logo URL</label>
+                    <input asp-for="LogoUrl" id="logoUrl" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface" placeholder="https://example.com/logo.png">
+                    <span asp-validation-for="LogoUrl" class="text-error text-sm"></span>
+                </div>
+
+                <div class="flex items-center justify-end gap-4 pt-6 border-t border-white/5">
+                    <a asp-action="Index" class="px-8 py-3 rounded-full border border-outline-variant text-on-surface font-label-lg hover:bg-surface-bright transition-all inline-block">İptal</a>
+                    <button type="submit" class="px-8 py-3 rounded-full bg-primary-container text-on-primary-container font-label-lg font-bold shadow-lg hover:brightness-110 transition-all active:scale-95">
+                        Takımı Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Canlı Önizleme -->
+        <div class="lg:col-span-5">
+            <p class="font-label-lg text-label-lg text-on-surface-variant ml-2 mb-4 uppercase tracking-widest opacity-60">Canlı Önizleme</p>
+            <div class="glass-card rounded-[24px] p-10 flex flex-col items-center text-center">
+                <div class="w-32 h-32 mb-6 rounded-full bg-surface-container-high flex items-center justify-center border-4 border-surface-variant shadow-inner overflow-hidden">
+                    <div class="flex flex-col items-center" id="logoPlaceholder">
+                        <span class="material-symbols-outlined text-6xl text-primary/40">sports_soccer</span>
+                    </div>
+                    <img alt="Team Logo" class="hidden w-full h-full object-contain p-4" id="logoImg" src="">
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-2" id="previewName">Takım Adı</h3>
+                <div class="flex items-center gap-2 px-4 py-1.5 bg-surface-variant/30 rounded-full mb-2">
+                    <span class="material-symbols-outlined text-primary text-lg">location_city</span>
+                    <span class="font-label-lg text-label-lg text-on-surface-variant" id="previewCity">Şehir</span>
+                </div>
+                <div class="flex items-center gap-2 text-on-surface-variant">
+                    <span class="material-symbols-outlined text-lg">stadium</span>
+                    <span class="font-label-md text-label-md" id="previewStadium">Stadyum</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const teamNameInput = document.getElementById('teamName');
+        const cityInput = document.getElementById('city');
+        const stadiumInput = document.getElementById('stadium');
+        const logoUrlInput = document.getElementById('logoUrl');
+
+        const previewName = document.getElementById('previewName');
+        const previewCity = document.getElementById('previewCity');
+        const previewStadium = document.getElementById('previewStadium');
+        const logoPlaceholder = document.getElementById('logoPlaceholder');
+        const logoImg = document.getElementById('logoImg');
+
+        const updatePreview = () => {
+            previewName.textContent = teamNameInput.value || 'Takım Adı';
+            previewCity.textContent = cityInput.value || 'Şehir';
+            previewStadium.textContent = stadiumInput.value || 'Stadyum';
+
+            if (logoUrlInput.value) {
+                logoImg.src = logoUrlInput.value;
+                logoImg.classList.remove('hidden');
+                logoPlaceholder.classList.add('hidden');
+                logoImg.onerror = () => {
+                    logoImg.classList.add('hidden');
+                    logoPlaceholder.classList.remove('hidden');
+                };
+            } else {
+                logoImg.classList.add('hidden');
+                logoPlaceholder.classList.remove('hidden');
+            }
+        };
+
+        [teamNameInput, cityInput, stadiumInput, logoUrlInput].forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+    });
+</script>

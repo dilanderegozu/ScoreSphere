@@ -1,0 +1,142 @@
+﻿@model ScoreSphere.WebUI.Areas.Admin.Dtos.MatchDtos.UpdateMatchDto
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="ml-[280px] min-h-screen p-8 max-w-[1200px]">
+
+    <div class="mb-8">
+        <div class="flex items-center gap-3 mb-2">
+            <a asp-action="Index" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-bright text-on-surface transition-all">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+            <div>
+                <h2 class="font-headline-lg text-headline-lg text-on-surface">⚽ Fikstürü Düzenle</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant">Maç bilgilerini, skorunu ve durumunu güncelleyin.</p>
+            </div>
+        </div>
+    </div>
+
+    <div asp-validation-summary="All" class="text-error mb-4"></div>
+
+    <div class="glass-card rounded-[24px] p-8 shadow-xl">
+        <form asp-action="Edit" method="post" class="space-y-6">
+            <input type="hidden" asp-for="MatchId" />
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="LeagueId">Lig</label>
+                    <select asp-for="LeagueId" asp-items="ViewBag.Leagues" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface"></select>
+                    <span asp-validation-for="LeagueId" class="text-error text-sm"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="SeasonId">Sezon</label>
+                    <select asp-for="SeasonId" asp-items="ViewBag.Seasons" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface"></select>
+                    <span asp-validation-for="SeasonId" class="text-error text-sm"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="HomeTeamId">Ev Sahibi Takım</label>
+                    <select asp-for="HomeTeamId" asp-items="ViewBag.Teams" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface"></select>
+                    <span asp-validation-for="HomeTeamId" class="text-error text-sm"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="AwayTeamId">Deplasman Takım</label>
+                    <select asp-for="AwayTeamId" asp-items="ViewBag.Teams" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface"></select>
+                    <span asp-validation-for="AwayTeamId" class="text-error text-sm"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="Week">Hafta</label>
+                    <input asp-for="Week" type="number" min="1" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    <span asp-validation-for="Week" class="text-error text-sm"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="MatchDate">Tarih ve Saat</label>
+                    <input asp-for="MatchDate" type="datetime-local" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    <span asp-validation-for="MatchDate" class="text-error text-sm"></span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="Stadium">Stadyum</label>
+                    <input asp-for="Stadium" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    <span asp-validation-for="Stadium" class="text-error text-sm"></span>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="Referee">Hakem</label>
+                    <input asp-for="Referee" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    <span asp-validation-for="Referee" class="text-error text-sm"></span>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-6">
+                <h3 class="font-title-lg text-title-lg text-on-surface mb-4">Maç Durumu ve Skor</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="space-y-2">
+                        <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="Status">Durum</label>
+                        <select asp-for="Status" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                            <option value="Upcoming">Başlamadı</option>
+                            <option value="Live">Canlı</option>
+                            <option value="HalfTime">Devre Arası</option>
+                            <option value="Finished">Bitti</option>
+                            <option value="Postponed">Ertelendi</option>
+                            <option value="Cancelled">İptal Edildi</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-error text-sm"></span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="Minute">Dakika</label>
+                        <input asp-for="Minute" type="number" min="0" max="120" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                        <span asp-validation-for="Minute" class="text-error text-sm"></span>
+                    </div>
+
+                    <div class="flex items-end pb-3">
+                        <label class="relative inline-flex items-center cursor-pointer gap-3">
+                            <input asp-for="IsFeatured" class="sr-only peer">
+                            <div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+                            <span class="font-label-lg text-label-lg text-on-surface-variant">Öne Çıkan Maç</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="space-y-2">
+                        <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="HomeScore">Ev Sahibi Skor</label>
+                        <input asp-for="HomeScore" type="number" min="0" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="AwayScore">Deplasman Skor</label>
+                        <input asp-for="AwayScore" type="number" min="0" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="HomeHalfScore">İY Ev Sahibi</label>
+                        <input asp-for="HomeHalfScore" type="number" min="0" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="font-label-lg text-label-lg text-on-surface-variant px-1" asp-for="AwayHalfScore">İY Deplasman</label>
+                        <input asp-for="AwayHalfScore" type="number" min="0" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-4 pt-6 border-t border-white/5">
+                <a asp-action="Index" class="px-8 py-3 rounded-full border border-outline-variant text-on-surface font-label-lg hover:bg-surface-bright transition-all inline-block">İptal</a>
+                <button type="submit" class="px-8 py-3 rounded-full bg-primary-container text-on-primary-container font-label-lg font-bold shadow-lg hover:brightness-110 transition-all active:scale-95">
+                    Değişiklikleri Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</main>

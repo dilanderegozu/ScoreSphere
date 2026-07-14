@@ -1,0 +1,229 @@
+﻿@model ScoreSphere.WebUI.Areas.Admin.Models.DashboardViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<main class="ml-[280px] min-h-screen">
+    <!-- TopAppBar -->
+
+    <div class="p-8 space-y-8">
+        <!-- First Row: Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Toplam Lig -->
+            <div class="glass-card p-6 rounded-2xl stats-glow transition-all duration-300 group">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-primary/10 rounded-xl text-primary-container">
+                        <span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">emoji_events</span>
+                    </div>
+               
+                </div>
+                <h3 class="text-on-surface-variant font-label-lg text-label-lg">Toplam Lig</h3>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-on-surface font-headline-lg text-headline-lg">@Model.TotalLeagues</span>
+                </div>
+                <p class="text-on-surface-variant/60 font-body-md text-body-md mt-2">Aktif devam eden organizasyonlar</p>
+            </div>
+            <!-- Toplam Takım -->
+            <div class="glass-card p-6 rounded-2xl stats-glow transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-primary/10 rounded-xl text-primary-container">
+                        <span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">groups</span>
+                    </div>
+             
+                </div>
+                <h3 class="text-on-surface-variant font-label-lg text-label-lg">Toplam Takım</h3>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-on-surface font-headline-lg text-headline-lg">@Model.TotalTeams</span>
+                </div>
+                <p class="text-on-surface-variant/60 font-body-md text-body-md mt-2">Kayıtlı lisanslı kulüp sayısı</p>
+            </div>
+            <!-- Toplam Maç -->
+            <div class="glass-card p-6 rounded-2xl stats-glow transition-all duration-300">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-primary/10 rounded-xl text-primary-container">
+                        <span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">sports_soccer</span>
+                    </div>
+                 
+                </div>
+                <h3 class="text-on-surface-variant font-label-lg text-label-lg">Toplam Maç</h3>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-on-surface font-headline-lg text-headline-lg">@Model.TotalMatches</span>
+                </div>
+                <p class="text-on-surface-variant/60 font-body-md text-body-md mt-2">Tamamlanan tüm sezon maçları</p>
+            </div>
+     
+           
+        </div>
+        <!-- Second Row: Recent Matches & League Summary -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left: Recent Matches Table -->
+            <div class="lg:col-span-2 glass-card rounded-2xl overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                    <h2 class="font-title-lg text-title-lg text-on-surface">Son Maçlar</h2>
+                    <a asp-controller="Match" asp-action="Index" class="text-primary font-label-lg text-label-lg hover:underline">Tümünü Gör</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-surface-container-high/50 text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+                            <tr>
+                                <th class="px-6 py-4">Ev Sahibi</th>
+                                <th class="px-6 py-4 text-center">Skor</th>
+                                <th class="px-6 py-4">Deplasman</th>
+                                <th class="px-6 py-4">Tarih</th>
+                                <th class="px-6 py-4">Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            @if (!Model.RecentMatches.Any())
+                            {
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-on-surface-variant">
+                                        Henüz maç bulunmuyor.
+                                    </td>
+                                </tr>
+                            }
+                            @foreach (var match in Model.RecentMatches)
+                            {
+                                <tr class="hover:bg-white/5 transition-colors group">
+                                    <td class="px-6 py-4 font-body-md text-body-md text-on-surface">@match.HomeTeamName</td>
+                                    <td class="px-6 py-4 text-center">
+                                        @if (match.Status == "Finished" || match.Status == "Live")
+                                        {
+                                            <span class="bg-surface-container-highest px-3 py-1 rounded-lg font-bold text-primary">
+                                                @match.HomeScore - @match.AwayScore
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="bg-surface-container-highest px-3 py-1 rounded-lg font-bold text-on-surface-variant">vs</span>
+                                        }
+                                    </td>
+                                    <td class="px-6 py-4 font-body-md text-body-md text-on-surface">@match.AwayTeamName</td>
+                                    <td class="px-6 py-4 font-body-md text-body-md text-on-surface-variant">
+                                        @if (match.Status == "Live")
+                                        {
+                                            <text>Bugün, @match.MatchDate.ToString("HH:mm")</text>
+                                        }
+                                        else
+                                        {
+                                            @match.MatchDate.ToString("dd.MM.yyyy")
+                                        }
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @{
+                                            string statusClass = match.Status switch
+                                            {
+                                                "Finished" => "bg-green-400/10 text-green-400",
+                                                "Live" => "bg-yellow-400/10 text-yellow-400",
+                                                _ => "bg-on-surface-variant/10 text-on-surface-variant"
+                                            };
+                                            string statusLabel = match.Status switch
+                                            {
+                                                "Finished" => "Tamamlandı",
+                                                "Live" => "Canlı",
+                                                "Upcoming" => "Bekleniyor",
+                                                _ => match.Status
+                                            };
+                                        }
+                                        <span class="px-3 py-1 rounded-full @statusClass text-[11px] font-bold uppercase tracking-tight">
+                                            @statusLabel
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Right: League Summary -->
+            <div class="glass-card rounded-2xl flex flex-col">
+                <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                    <div>
+                        <h2 class="font-title-lg text-title-lg text-on-surface">Lig Özeti</h2>
+                        <p class="text-on-surface-variant font-label-sm text-label-sm">@Model.SelectedLeagueName</p>
+                    </div>
+                    <select id="dashboardLeagueSelect"
+                            class="bg-surface-container-high px-3 py-2 rounded-lg border border-outline-variant text-on-surface text-sm font-bold cursor-pointer focus:outline-none focus:border-primary">
+                        @foreach (var league in Model.Leagues)
+                        {
+                            <option value="@league.SeasonId" selected="@(league.SeasonId == Model.SelectedSeasonId)">
+                                @league.LeagueName
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="p-4 flex-1">
+                    @if (!Model.TopStandings.Any())
+                    {
+                        <p class="text-on-surface-variant text-center py-4">Bu lig için henüz veri yok.</p>
+                    }
+                    else
+                    {
+                        <div class="space-y-3">
+                            @{
+                                int rank = 0;
+                            }
+                            @foreach (var team in Model.TopStandings)
+                            {
+                                rank++;
+                                <div class="flex items-center justify-between p-3 rounded-xl @(rank == 1 ? "bg-primary/5 border border-primary/10" : "hover:bg-white/5 transition-colors")">
+                                    <div class="flex items-center gap-3">
+                                        <span class="@(rank == 1 ? "text-primary" : "text-on-surface-variant") font-bold w-4">@rank</span>
+                                        <span class="text-on-surface font-body-md">@team.TeamName</span>
+                                    </div>
+                                    <span class="@(rank == 1 ? "text-primary" : "text-on-surface") font-bold">@team.Points P</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                    <a asp-controller="Standing" asp-action="Index" asp-route-seasonId="@Model.SelectedSeasonId"
+                       class="block text-center w-full mt-6 py-3 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-bright transition-colors font-label-lg">
+                        Puan Durumu Detayı
+                    </a>
+                </div>
+            </div>
+
+            <script>
+                            document.getElementById("dashboardLeagueSelect").addEventListener("change", function () {
+                                window.location.href = `/Admin/Dashboard/Index?seasonId=${this.value}`;
+                            });
+            </script>
+        </div>
+        <!-- Third Row: Recent Activities Timeline -->
+      
+        <!-- Bottom Row: Quick Actions -->
+        <div>
+            <h2 class="font-title-lg text-title-lg text-on-surface mb-6">Hızlı İşlemler</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                <a asp-controller="AdminLeague" asp-action="CreateLeague" class="glass-card p-6 rounded-2xl flex flex-col items-center gap-3 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 group text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-surface-container-highest flex items-center justify-center group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-on-primary">add_circle</span>
+                    </div>
+                    <span class="font-label-lg text-label-lg text-on-surface">Yeni Lig Ekle</span>
+                </a>
+
+                <a asp-controller="Team" asp-action="Create" class="glass-card p-6 rounded-2xl flex flex-col items-center gap-3 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 group text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-surface-container-highest flex items-center justify-center group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-on-primary">group_add</span>
+                    </div>
+                    <span class="font-label-lg text-label-lg text-on-surface">Yeni Takım Ekle</span>
+                </a>
+
+                <a asp-controller="AdminFixture" asp-action="Create" class="glass-card p-6 rounded-2xl flex flex-col items-center gap-3 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 group text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-surface-container-highest flex items-center justify-center group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-on-primary">sports_score</span>
+                    </div>
+                    <span class="font-label-lg text-label-lg text-on-surface">Yeni Maç Oluştur</span>
+                </a>
+
+                <a asp-controller="AdminSeason" asp-action="Create" class="glass-card p-6 rounded-2xl flex flex-col items-center gap-3 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 group text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-surface-container-highest flex items-center justify-center group-hover:bg-primary transition-colors">
+                        <span class="material-symbols-outlined text-primary group-hover:text-on-primary">date_range</span>
+                    </div>
+                    <span class="font-label-lg text-label-lg text-on-surface">Yeni Sezon Oluştur</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,133 @@
+﻿@model ScoreSphere.WebUI.Areas.Admin.Models.SeasonIndexViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="ml-[280px] min-h-screen flex flex-col relative">
+    <div class="p-8 flex flex-col gap-8 max-w-[1440px]">
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Sezon Yönetimi</h2>
+                <p class="text-on-surface-variant font-body-md mt-1">Lig bazlı sezon planlamalarını buradan yönetebilirsiniz.</p>
+            </div>
+            <a asp-action="Create" class="bg-primary-fixed-dim text-on-primary-fixed px-6 py-3 rounded-xl font-label-lg flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary-fixed-dim/20">
+                <span class="material-symbols-outlined">add</span>
+                Yeni Sezon Oluştur
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card p-6 rounded-2xl flex items-center gap-5 border-l-4 border-primary">
+                <div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary-fixed-dim">
+                    <span class="material-symbols-outlined text-3xl">calendar_month</span>
+                </div>
+                <div>
+                    <p class="text-on-surface-variant text-sm font-medium">Aktif Sezonlar</p>
+                    <h4 class="text-2xl font-bold text-on-surface">@Model.ActiveSeasons</h4>
+                </div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl flex items-center gap-5 border-l-4 border-tertiary">
+                <div class="w-12 h-12 rounded-xl bg-tertiary-container/20 flex items-center justify-center text-tertiary-fixed-dim">
+                    <span class="material-symbols-outlined text-3xl">pending_actions</span>
+                </div>
+                <div>
+                    <p class="text-on-surface-variant text-sm font-medium">Yaklaşan Sezonlar</p>
+                    <h4 class="text-2xl font-bold text-on-surface">@Model.UpcomingSeasons</h4>
+                </div>
+            </div>
+            <div class="glass-card p-6 rounded-2xl flex items-center gap-5 border-l-4 border-on-surface-variant">
+                <div class="w-12 h-12 rounded-xl bg-surface-variant/30 flex items-center justify-center text-on-surface-variant">
+                    <span class="material-symbols-outlined text-3xl">history</span>
+                </div>
+                <div>
+                    <p class="text-on-surface-variant text-sm font-medium">Tamamlanan Sezonlar</p>
+                    <h4 class="text-2xl font-bold text-on-surface">@Model.CompletedSeasons</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container-high/50">
+                            <th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5 uppercase tracking-wider text-[11px]">Sezon Adı</th>
+                            <th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5 uppercase tracking-wider text-[11px]">Bağlı Lig</th>
+                            <th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5 uppercase tracking-wider text-[11px]">Başlangıç Tarihi</th>
+                            <th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5 uppercase tracking-wider text-[11px]">Bitiş Tarihi</th>
+                            <th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5 uppercase tracking-wider text-[11px]">Durum</th>
+                            <th class="px-6 py-4 font-label-lg text-on-surface-variant border-b border-white/5 uppercase tracking-wider text-[11px] text-right">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        @if (!Model.Seasons.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="px-6 py-8 text-center text-on-surface-variant">Henüz sezon eklenmemiş.</td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.Seasons)
+                        {
+                            <tr class="hover:bg-white/[0.02] transition-colors group">
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded bg-primary-container/20 flex items-center justify-center text-primary-fixed-dim">
+                                            <span class="material-symbols-outlined text-lg">calendar_today</span>
+                                        </div>
+                                        <span class="font-body-lg font-semibold text-on-surface">@item.SeasonName</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <span class="text-on-surface-variant font-body-md">@item.LeagueName</span>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <span class="text-on-surface-variant font-body-md">@item.StartDate.ToString("dd MMMM yyyy")</span>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <span class="text-on-surface-variant font-body-md">@item.EndDate.ToString("dd MMMM yyyy")</span>
+                                </td>
+                                <td class="px-6 py-5">
+                                    @{
+                                        string statusColor = item.Status switch
+                                        {
+                                            "Devam Ediyor" => "text-green-400",
+                                            "Planlandı" => "text-yellow-400",
+                                            _ => "text-on-surface-variant"
+                                        };
+                                    }
+                                    <span class="@statusColor font-label-sm font-bold">@item.Status</span>
+                                </td>
+                                <td class="px-6 py-5 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a asp-action="Edit" asp-route-id="@item.SeasonId" class="p-2 hover:bg-surface-variant rounded-lg text-on-surface-variant hover:text-primary transition-colors inline-block">
+                                            <span class="material-symbols-outlined text-xl">edit</span>
+                                        </a>
+                                        <button type="button" onclick="deleteSeason(@item.SeasonId)" class="p-2 hover:bg-surface-variant rounded-lg text-on-surface-variant hover:text-error transition-colors">
+                                            <span class="material-symbols-outlined text-xl">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function deleteSeason(id) {
+        if (!confirm('Bu sezonu silmek istediğinize emin misiniz?')) return;
+
+        fetch(`/Admin/Season/Delete/${id}`, { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('Sezon silinirken bir hata oluştu.');
+                }
+            });
+    }
+</script>
