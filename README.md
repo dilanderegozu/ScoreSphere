@@ -140,7 +140,7 @@ Public site'tan tamamen izole, ASP.NET Core **Areas** ile ayrılmış, sabit sid
 
 ### 📆 Fikstür Yönetimi
 - Lig + hafta bazlı filtreleme, "Hepsi" seçeneği dahil
-- Maç ekleme/düzenleme: takım, tarih, stadyum, hakem bilgileri; düzenlemede ayrıca durum, dakika ve skor girişi
+- Maç ekleme/düzenleme: takım, tarih, stadyum, hakem bilgileri, düzenlemede ayrıca durum, dakika ve skor girişi
 <img width="1896" height="853" alt="Ekran görüntüsü 2026-07-15 003606" src="https://github.com/user-attachments/assets/ccffa8a9-00c5-4f73-bbbe-4791fc5fc324" />
 <img width="1915" height="872" alt="Ekran görüntüsü 2026-07-15 003658" src="https://github.com/user-attachments/assets/384c2762-0bd9-4311-9427-a8741d64e468" />
 <img width="1902" height="871" alt="Ekran görüntüsü 2026-07-15 003715" src="https://github.com/user-attachments/assets/d5b0e8d3-9f6a-47e9-a0d8-2bc01764f6ca" />
